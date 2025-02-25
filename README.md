@@ -1,7 +1,7 @@
 # Online Game Store
 
 ## 📌 Project Description
-An online game store where users can browse, search, and purchase video games. The store provides various categories, discounts, and a seamless shopping experience.
+An online game store where users can browse, search, and purchase games technologies. The store provides various categories, discounts, and a seamless shopping experience.
 
 ## 🎮 Features
 - Browse and search for games
@@ -18,8 +18,8 @@ An online game store where users can browse, search, and purchase video games. T
 ### Steps
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-username/online-game-store.git
-   cd online-game-store
+   git clone https://github.com/abdullohqurbon0v/ingame.git
+   cd ingame
    ```
 2. Install dependencies:
    ```sh
