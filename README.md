@@ -1,8 +1,3 @@
-# Online Game Store
-
-## 📌 Project Description
-An online game store where users can browse, search, and purchase games technologies. The store provides various categories, discounts, and a seamless shopping experience.
-
 ## 🎮 Features
 - Browse and search for games
 - Game categories and filtering
