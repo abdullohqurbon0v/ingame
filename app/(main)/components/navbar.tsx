@@ -6,10 +6,9 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { cn } from '@/lib/utils'
 import { Search, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React from 'react'
 
 const Navbar = () => {
-      const [selectLng, setSelectLng] = useState('')
       return (
             <div className={cn("fixed inset-0 h-16 bg-[#1a1a1a]")}>
                   <header className='flex justify-between items-center py-5 h-full max-w-[1200px] mx-auto text-white'>
