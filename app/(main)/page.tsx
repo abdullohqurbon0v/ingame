@@ -1,9 +1,10 @@
-import { arrays } from '@/constants'
+import { arrays, news } from '@/constants'
 import Image from 'next/image'
 import React from 'react'
 import Categories from './components/categories'
 import pk from '@/public/pks.png'
 import Computers from './components/computers'
+import News from './components/news'
 const data = [
       {
             id: 1,
@@ -75,6 +76,16 @@ const MainPage = () => {
                               <div className='grid grid-cols-3 gap-10 mt-12 px-12'>
                                     {data.map(item => (
                                           <Computers key={item.id} item={item} />
+                                    ))}
+                              </div>
+                        </div>
+                  </div>
+                  <div className='bg-[#1A1A1A]'>
+                        <div className='max-w-[1200px] mx-auto py-16'>
+                              <h1 className='text-3xl font-bold'>Новинки</h1>
+                              <div className='grid grid-cols-3 gap-10 mt-12 px-12'>
+                                    {news.map((item, idx) => (
+                                          <News key={idx} item={item} />
                                     ))}
                               </div>
                         </div>

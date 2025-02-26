@@ -20,7 +20,7 @@ interface ComputersTypes {
 
 const Computers = ({ item }: ComputersTypes) => {
       return (
-            <div className='bg-[#1E1E1E] pt-16 flex flex-col space-y-6 px-5'>
+            <div className='bg-[#1E1E1E] pt-16 flex flex-col space-y-6 px-5 pb-10  shadow-xl rounded-xl'>
                   <Image src={item.image} alt={item.label} width={200} height={200} className='mx-auto' />
                   <div className='flex  justify-between items-start border-b-2 pb-4 border-gray-500'>
                         <p className='font-sans bg-[#D3176D] px-1 rounded-full cursor-pointer'>12 комплекции</p>

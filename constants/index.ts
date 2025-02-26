@@ -7,6 +7,7 @@ import naushnik from '@/public/naushnik.png'
 import stul from '@/public/stul.png'
 import block from '@/public/block.png'
 import { StaticImageData } from 'next/image'
+import chairnews from '@/public/chairgame.png'
 
 interface CategoryTypes {
       image: StaticImageData;
@@ -56,3 +57,64 @@ export const arrays: CategoryTypes[] = [
             query: 'components'
       },
 ];
+
+
+export const news = [
+      {
+            id: 1,
+            image: chairnews,
+            title: "Name of chair",
+            oldPrice: "120000",
+            price: "100000",
+            description: "Lorem ipsum dolor sit amet."
+      }, {
+            id: 2,
+            image: chairnews,
+            title: "Name of chair",
+            oldPrice: "120000",
+            price: "100000",
+            description: "Lorem ipsum dolor sit amet."
+      }, {
+            id: 3,
+            image: chairnews,
+            title: "Name of chair",
+            oldPrice: "120000",
+            price: "100000",
+            description: "Lorem ipsum dolor sit amet."
+      }, {
+            id: 4,
+            image: chairnews,
+            title: "Name of chair",
+            oldPrice: "120000",
+            price: "100000",
+            description: "Lorem ipsum dolor sit amet."
+      }, {
+            id: 5,
+            image: chairnews,
+            title: "Name of chair",
+            oldPrice: "120000",
+            price: "100000",
+            description: "Lorem ipsum dolor sit amet."
+      }, {
+            id: 6,
+            image: chairnews,
+            title: "Name of chair",
+            oldPrice: "120000",
+            price: "100000",
+            description: "Lorem ipsum dolor sit amet."
+      }, {
+            id: 7,
+            image: chairnews,
+            title: "Name of chair",
+            oldPrice: "120000",
+            price: "100000",
+            description: "Lorem ipsum dolor sit amet."
+      }, {
+            id: 8,
+            image: chairnews,
+            title: "Name of chair",
+            oldPrice: "120000",
+            price: "100000",
+            description: "Lorem ipsum dolor sit amet."
+      },
+]
