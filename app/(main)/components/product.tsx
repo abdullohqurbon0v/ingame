@@ -13,7 +13,7 @@ interface NewsTypes {
       }
 }
 
-const News = ({ item }: NewsTypes) => {
+const Product = ({ item }: NewsTypes) => {
       return (
             <div className='bg-[#1E1E1E] font-sans pt-16 flex flex-col space-y-3 shadow-xl rounded-xl px-5 pb-5'>
                   <Image src={item.image} alt={item.title} width={200} height={200} className='mx-auto' />
@@ -34,4 +34,4 @@ const News = ({ item }: NewsTypes) => {
       )
 }
 
-export default News
+export default Product

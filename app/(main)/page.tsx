@@ -4,7 +4,7 @@ import React from 'react'
 import Categories from './components/categories'
 import pk from '@/public/pks.png'
 import Computers from './components/computers'
-import News from './components/news'
+import Product from './components/product'
 const data = [
       {
             id: 1,
@@ -85,7 +85,7 @@ const MainPage = () => {
                               <h1 className='text-3xl font-bold'>Новинки</h1>
                               <div className='grid grid-cols-3 gap-10 mt-12 px-12'>
                                     {news.map((item, idx) => (
-                                          <News key={idx} item={item} />
+                                          <Product key={idx} item={item} />
                                     ))}
                               </div>
                         </div>

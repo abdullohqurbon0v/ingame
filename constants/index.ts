@@ -8,6 +8,7 @@ import stul from '@/public/stul.png'
 import block from '@/public/block.png'
 import { StaticImageData } from 'next/image'
 import chairnews from '@/public/chairgame.png'
+import image from '@/public/colon.png'
 
 interface CategoryTypes {
       image: StaticImageData;
@@ -118,3 +119,175 @@ export const news = [
             description: "Lorem ipsum dolor sit amet."
       },
 ]
+
+export
+      const data = [
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+            {
+                  image,
+                  title: "Название",
+                  oldPrice: "4 586 000",
+                  price: "4 000 000",
+                  description: "подробное ниформация о продукте",
+            },
+      ]
