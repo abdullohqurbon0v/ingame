@@ -9,6 +9,7 @@ import block from '@/public/block.png'
 import { StaticImageData } from 'next/image'
 import chairnews from '@/public/chairgame.png'
 import image from '@/public/colon.png'
+import img from '@/public/usluga.png'
 
 interface CategoryTypes {
       image: StaticImageData;
@@ -291,3 +292,38 @@ export
                   description: "подробное ниформация о продукте",
             },
       ]
+
+
+
+export const usluga = [
+      {
+            img,
+            label: "Кастомизация",
+            description: "акастомизируем ваш ПК по вашему любимому дизайну"
+      },
+      {
+            img,
+            label: "Кастомизация",
+            description: "акастомизируем ваш ПК по вашему любимому дизайну"
+      },
+      {
+            img,
+            label: "Кастомизация",
+            description: "акастомизируем ваш ПК по вашему любимому дизайну"
+      },
+      {
+            img,
+            label: "Кастомизация",
+            description: "акастомизируем ваш ПК по вашему любимому дизайну"
+      },
+      {
+            img,
+            label: "Кастомизация",
+            description: "акастомизируем ваш ПК по вашему любимому дизайну"
+      },
+      {
+            img,
+            label: "Кастомизация",
+            description: "акастомизируем ваш ПК по вашему любимому дизайну"
+      }
+]

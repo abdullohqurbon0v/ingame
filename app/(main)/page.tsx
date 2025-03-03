@@ -1,10 +1,16 @@
-import { arrays, news } from '@/constants'
+'use client'
+
+import { arrays, news, usluga } from '@/constants'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Categories from './components/categories'
 import pk from '@/public/pks.png'
 import Computers from './components/computers'
 import Product from './components/product'
+import { $axios } from '@/http/api'
+import Usluga from './components/usluga'
+import Footer from './components/footer'
+
 const data = [
       {
             id: 1,
@@ -43,6 +49,22 @@ const data = [
 ]
 
 const MainPage = () => {
+
+      // useEffect(() => {
+      //       async function getBanners() {
+      //             try {
+
+      //                   const res = await $axios.get('/products')
+      //                   console.log(res)
+      //             } catch (error) {
+      //                   console.log(error)
+      //             }
+      //       }
+      //       getBanners()
+      // }, [])
+
+
+
       return (
             <main className='mt-16 text-white'>
                   <div className='max-w-[1200px] mx-auto flex justify-between py-64'>
@@ -90,6 +112,18 @@ const MainPage = () => {
                               </div>
                         </div>
                   </div>
+                  <div className='bg-[#1A1A1A]'>
+                        <div className='max-w-[1200px] mx-auto py-16'>
+                              <h1 className='text-3xl font-bold'>Услуги</h1>
+                              <div className='grid grid-cols-3 gap-10 mt-12 px-12'>
+                                    {usluga.map((item, idx) => (
+                                          <Usluga key={idx} item={item} />
+                                    ))}
+                              </div>
+                        </div>
+                  </div>
+
+                  <Footer />
             </main>
       )
 }
