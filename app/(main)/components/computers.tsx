@@ -1,5 +1,6 @@
 import { Cctv, Cpu, MemoryStick } from 'lucide-react'
 import Image, { StaticImageData } from 'next/image'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 
@@ -19,6 +20,10 @@ interface ComputersTypes {
 }
 
 const Computers = ({ item }: ComputersTypes) => {
+      const router = useRouter()
+      const onNavigateProduct = (id: number) => {
+            router.push(`/products/${id}`)
+      }
       return (
             <div className='bg-[#1E1E1E] pt-16 flex flex-col space-y-6 px-5 pb-10  shadow-xl rounded-xl'>
                   <Image src={item.image} alt={item.label} width={200} height={200} className='mx-auto' />
@@ -55,7 +60,7 @@ const Computers = ({ item }: ComputersTypes) => {
                         </div>
                   </div>
                   <div className='flex space-x-5'>
-                        <button className='px-5 py-1 border  text-sm'>Подробнее</button>
+                        <button className='px-5 py-1 border  text-sm' onClick={() => onNavigateProduct(item.id)}>Подробнее</button>
                         <button className='px-5 py-1 border border-[#D3176D] text-sm'>Купить</button>
                   </div>
             </div>

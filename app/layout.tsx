@@ -17,7 +17,7 @@ export default function RootLayout({ children }: ChildProps) {
   return (
     <html lang="en">
       <body
-        className={`${orbitron.variable} antialiased`}
+        className={`${orbitron.variable} antialiased dark`}
       >
         {children}
       </body>
