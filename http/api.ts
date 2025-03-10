@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const $axios = axios.create({
-  baseURL: "https://api.mirmakhmudoff.uz/api/dashboard/",
+  baseURL: "https://api.mirmakhmudoff.uz/api/",
   headers: {
     'Content-Type': 'application/json'
   },
