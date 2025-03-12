@@ -1,6 +1,6 @@
 import SingleProductPage from "../../components/singleDesktopPage";
 
-const Page = ({ params }: { params: { id: string } }) => {
+const Page = ({ params }: Promise<{ id: string }>) => {
   return <SingleProductPage id={params.id} />;
 };
 
