@@ -53,7 +53,7 @@ const Navbar = () => {
           >
             <span className="text-[#D3176D]">OutGame</span>.uz
           </Link>
-          <Products mobile />
+          <Products />
           <Link
             href="/brands"
             className="text-sm hidden sm:block hover:text-[#D3176D] transition-colors"
@@ -197,7 +197,7 @@ const Navbar = () => {
                   Главная
                 </Link>
                 <ProductsAccordion />
-                <Products mobile />
+                <Products />
                 <Link
                   href="/brands"
                   className="hover:text-[#D3176D] transition-colors"
