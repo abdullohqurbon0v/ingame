@@ -1,33 +1,7 @@
 import { BlogTypes } from "@/types";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
-
-const blogPosts = [
-  {
-    title: "У нас горячие новинки!",
-    date: "16.05.24",
-    image: "https://api.mirmakhmudoff.uz/media/desktop_images/w800_1.png", // Заменить на актуальный путь к изображению
-    description:
-      "Современный игровой компьютерный стол, который станет идеальным помощником в мире виртуальных развлечений и погрузит Вас в них с головой!",
-    link: "#",
-  },
-  {
-    title: "У нас горячие новинки!",
-    date: "16.05.24",
-    image: "https://api.mirmakhmudoff.uz/media/desktop_images/w800_1.png",
-    description:
-      "Современный игровой компьютерный стол, который станет идеальным помощником в мире виртуальных развлечений и погрузит Вас в них с головой!",
-    link: "#",
-  },
-  {
-    title: "У нас горячие новинки!",
-    date: "16.05.24",
-    image: "https://api.mirmakhmudoff.uz/media/desktop_images/w800_1.png",
-    description:
-      "Современный игровой компьютерный стол, который станет идеальным помощником в мире виртуальных развлечений и погрузит Вас в них с головой!",
-    link: "#",
-  },
-];
 
 const Blogs = ({ blogs }: { blogs: BlogTypes[] }) => {
   return (
@@ -62,12 +36,12 @@ const Blogs = ({ blogs }: { blogs: BlogTypes[] }) => {
                   ? post.description_ru.slice(0, 50)
                   : post.description_ru}
               </p>
-              <a
-                href={post.id}
+              <Link
+                href={`/blog/${post.id}`}
                 className="text-pink-500 text-sm font-semibold mt-4 inline-block hover:underline"
               >
                 Читать дальше →
-              </a>
+              </Link>
             </div>
           </div>
         ))}

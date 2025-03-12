@@ -146,7 +146,9 @@ const MainPage = () => {
         </div>
       </div>
       <Videos videos={videos} />
-      <Accordions />
+      <div className="bg-[#1A1A1A]">
+        <Accordions />
+      </div>
       <Blogs blogs={blogs} />
       <Footer />
     </main>

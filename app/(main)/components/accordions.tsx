@@ -5,83 +5,36 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+
 const Accordions = () => {
   return (
-    <div className="max-w-[1200px] mx-auto">
-      <Accordion type="single" collapsible className="w-full space-y-3">
-        <AccordionItem value="item-1">
-          <AccordionTrigger>
-            Сколько примерно стоит средний ПК для игр?
-          </AccordionTrigger>
-          <AccordionContent>Что то будет тута</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-2">
-          <AccordionTrigger>
-            Сколько примерно стоит средний ПК для игр?
-          </AccordionTrigger>
-          <AccordionContent>Что то будет тута</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-3">
-          <AccordionTrigger>
-            Сколько примерно стоит средний ПК для игр?
-          </AccordionTrigger>
-          <AccordionContent>Что то будет тута</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-4">
-          <AccordionTrigger>
-            Сколько примерно стоит средний ПК для игр?
-          </AccordionTrigger>
-          <AccordionContent>Что то будет тута</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-5">
-          <AccordionTrigger>
-            Сколько примерно стоит средний ПК для игр?
-          </AccordionTrigger>
-          <AccordionContent>Что то будет тута</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-6">
-          <AccordionTrigger>
-            Сколько примерно стоит средний ПК для игр?
-          </AccordionTrigger>
-          <AccordionContent>Что то будет тута</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-7">
-          <AccordionTrigger>
-            Сколько примерно стоит средний ПК для игр?
-          </AccordionTrigger>
-          <AccordionContent>Что то будет тута</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-8">
-          <AccordionTrigger>
-            Сколько примерно стоит средний ПК для игр?
-          </AccordionTrigger>
-          <AccordionContent>Что то будет тута</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-9">
-          <AccordionTrigger>
-            Сколько примерно стоит средний ПК для игр?
-          </AccordionTrigger>
-          <AccordionContent>Что то будет тута</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-10">
-          <AccordionTrigger>
-            Сколько примерно стоит средний ПК для игр?
-          </AccordionTrigger>
-          <AccordionContent>Что то будет тута</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-11">
-          <AccordionTrigger>
-            Сколько примерно стоит средний ПК для игр?
-          </AccordionTrigger>
-          <AccordionContent>Что то будет тута</AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-12">
-          <AccordionTrigger>
-            Сколько примерно стоит средний ПК для игр?
-          </AccordionTrigger>
-          <AccordionContent>Что то будет тута</AccordionContent>
-        </AccordionItem>
-      </Accordion>
+    <div className="bg-[#0F0F0F] py-16">
+      <div className="max-w-[1200px] mx-auto px-4 text-white">
+        <h2 className="text-3xl font-bold text-center mb-6">
+          Часто задаваемые вопросы
+        </h2>
+        <p className="text-center text-gray-400 mb-12">
+          Ниже вы найдёте ответы на самые популярные вопросы наших клиентов.
+        </p>
+
+        <Accordion type="single" collapsible className="w-full space-y-4">
+          {Array.from({ length: 12 }, (_, idx) => (
+            <AccordionItem
+              key={idx}
+              value={`item-${idx + 1}`}
+              className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl px-5"
+            >
+              <AccordionTrigger className="py-4 text-lg font-medium hover:text-[#D3176D] transition-colors">
+                Сколько примерно стоит средний ПК для игр?
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-300 pb-4">
+                Всё зависит от конфигурации. В среднем цена игрового ПК
+                начинается от 6 000 000 сум и выше.
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
     </div>
   );
 };
