@@ -1,10 +1,9 @@
 import SingleProductPage from "../../components/singleDesktopPage";
 
-interface PageProps {
-  params: { id: string };
-}
+type Params = Promise<{ id: string }>;
 
-export default async function Page({ params }: PageProps) {
-  const id = (await params).id;
+export default async function Page(props: { params: Params }) {
+  const params = await props.params;
+  const id = params.id;
   return <SingleProductPage id={id} />;
 }
