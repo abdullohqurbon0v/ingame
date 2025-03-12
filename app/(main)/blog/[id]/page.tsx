@@ -36,8 +36,11 @@ const SingleBlog = () => {
 
   if (!blog) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-red-500">
-        Блог не найден.
+      <div className="flex justify-center items-center h-screen bg-black">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-white text-lg">Загрузка...</p>
+        </div>
       </div>
     );
   }

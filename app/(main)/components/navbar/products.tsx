@@ -98,7 +98,9 @@ const Products = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost">Продукция</Button>
+        <Button variant="ghost" className="hidden sm:block">
+          Продукция
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="start"

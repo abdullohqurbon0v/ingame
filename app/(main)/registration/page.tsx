@@ -1,50 +1,122 @@
-import { Truck } from 'lucide-react';
-import React from 'react';
+"use client";
 
-const CheckoutPage = () => {
-      return (
-            <div className='max-w-[1200px] mx-auto mt-16'>
-                  <div className="bg-black min-h-screen p-10 text-white">
-                        <div className="bg-gray-900 p-6 rounded-lg mb-6">
-                              <input type="text" placeholder="Ф.И.О." className="w-full p-2 mb-4 bg-gray-800 rounded" />
-                              <input type="text" placeholder="Номер телефона" className="w-full p-2 mb-4 bg-gray-800 rounded" />
-                        </div>
-                        <div className="bg-gray-900 p-6 rounded-lg mb-6">
-                              <h2 className="text-lg font-bold mb-4">Способы получения заказа</h2>
-                              <div className="flex items-center mb-4">
-                                    <input type="radio" id="delivery" name="method" className="mr-2" />
-                                    <label htmlFor="delivery">Доставка</label>
-                              </div>
-                              <div className="flex items-center mb-4">
-                                    <input type="radio" id="pickup" name="method" className="mr-2" />
-                                    <label htmlFor="pickup">Самовывоз</label>
-                              </div>
-                              <div className="p-4 bg-gray-800 rounded-lg mb-4 flex items-center">
-                                    <Truck className="text-pink-400 mr-3" />
-                                    <p>Стандартная доставка - 1 день</p>
-                              </div>
-                              <div className="p-4 bg-gray-800 rounded-lg mb-4 flex items-center">
-                                    <p>Бесплатная доставка по Ташкенту - 1 день</p>
-                              </div>
-                              <div className="p-4 bg-gray-800 rounded-lg mb-4 flex items-center">
-                                    <p>Доставка в регионы по тарифу курьерской службы</p>
-                              </div>
-                              <input type="text" placeholder="Адрес доставки" className="w-full p-2 bg-gray-800 rounded" />
-                        </div>
-                        <div className="bg-gray-900 p-6 rounded-lg mb-6">
-                              <h2 className="text-lg font-bold mb-4">Стоимость и условия доставки</h2>
-                              <p className="text-gray-400 text-sm mb-2">• Доставка в течение 1 дня - бесплатно.</p>
-                              <p className="text-gray-400 text-sm mb-2">• Доставка осуществляется по городу Ташкент до локации.</p>
-                              <p className="text-gray-400 text-sm mb-2">• Срочная доставка по тарифу «Яндекс доставка» (100% предоплата).</p>
-                              <textarea placeholder="Комментарий к заказу" className="w-full p-2 bg-gray-800 rounded mt-4"></textarea>
-                        </div>
-                        <div className="flex justify-between items-center p-4 bg-gray-800 rounded-lg">
-                              <p className="text-xl">Итого: <span className="font-bold text-pink-400">22 343 444 сум</span></p>
-                              <button className="bg-pink-500 px-6 py-2 rounded text-white font-bold">Оформить заказ</button>
-                        </div>
-                  </div>
-            </div>
-      );
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+
+type CartItemType = {
+  image: string;
+  title: string;
+  details: string;
+  availability: string;
+  quantity: number;
+  price: string;
 };
 
-export default CheckoutPage;
+const OrderPage: React.FC = () => {
+  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+
+  useEffect(() => {
+    const storedCart = localStorage.getItem("cartItems");
+    if (storedCart) {
+      try {
+        const parsed = JSON.parse(storedCart);
+        setCartItems(parsed);
+      } catch (e) {
+        console.error("Ошибка при парсинге корзины:", e);
+      }
+    }
+  }, []);
+
+  const formatPrice = (price: number) =>
+    price.toLocaleString("ru-RU").replace(/,/g, " ");
+
+  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const totalPrice = cartItems.reduce((acc, item) => {
+    const priceNum = parseInt(item.price?.replace(/\s/g, "") || "0");
+    return acc + priceNum * item.quantity;
+  }, 0);
+
+  return (
+    <div className="max-w-[1200px] min-h-screen mt-16 mx-auto px-4 py-12 text-white">
+      <h1 className="text-3xl font-bold mb-8">Оформить заказ</h1>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        {/* Left: Форма заказа */}
+        <div className="lg:col-span-2 space-y-6">
+          <input
+            type="text"
+            placeholder="Ф.И.О *"
+            className="w-full p-3 bg-[#222] rounded-lg outline-none"
+          />
+          <input
+            type="text"
+            placeholder="Номер телефона *"
+            className="w-full p-3 bg-[#222] rounded-lg outline-none"
+          />
+
+          <input
+            type="text"
+            placeholder="Адрес доставки *"
+            className="w-full p-3 bg-[#222] rounded-lg outline-none"
+          />
+
+          <div className="text-sm text-gray-400 leading-relaxed">
+            <p>• Доставка в течение 1 дня бесплатная.</p>
+            <p>• По городу Ташкент доставка до локации.</p>
+            <p>• Мебель — 100.000 сум по ТКАД.</p>
+            <p>• В регионы — экспресс-почтой BTS или Fargo.</p>
+          </div>
+
+          <textarea
+            rows={4}
+            placeholder="Комментарий к заказу"
+            className="w-full p-3 bg-[#222] rounded-lg outline-none"
+          />
+
+          <button className="bg-pink-500 w-full py-4 rounded-lg font-bold text-lg">
+            Оформить заказ
+          </button>
+        </div>
+        <div className="bg-[#111] p-6 rounded-2xl">
+          <div className="border border-pink-500 p-4 rounded-xl mb-6 text-sm">
+            <p>
+              Товаров: <strong>{totalItems}</strong>
+            </p>
+            <p>
+              Итого:{" "}
+              <strong className="text-pink-500 text-lg">
+                {formatPrice(totalPrice)} сум
+              </strong>
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {cartItems.map((item, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-4 bg-[#1c1c1c] p-3 rounded-lg"
+              >
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  width={64}
+                  height={64}
+                  className="rounded-lg border border-neutral-700 object-cover"
+                />
+                <div className="flex-1">
+                  <p className="text-sm font-semibold">{item.title}</p>
+                  <p className="text-xs text-gray-400">
+                    Кол-во: {item.quantity}
+                  </p>
+                  <p className="text-sm font-medium">{item.price} сум/мес</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default OrderPage;

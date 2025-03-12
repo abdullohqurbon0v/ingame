@@ -1,146 +1,109 @@
-import React from "react";
-import image from "@/public/bignaushnik.png";
+"use client";
+
 import Image from "next/image";
-import mikro from "@/public/mikrofon.png";
-import { Heart, User } from "lucide-react";
-import Link from "next/link";
+import { $axios } from "@/http/api";
+import { useEffect, useState } from "react";
 
-const productData = {
-  productImage: image,
-  images: [image, image, image],
-  title: "Название продукции",
-  model: "Название модели",
-  totalRates: 1323,
-  description:
-    "Ноутбук  – мощный мобильный компьютер, который с лёгкостью справится не только с самыми свежими новинками из мира игр. ",
-  price: "25 550 000",
-};
+export interface ProductsType {
+  description_ru: string;
+  description_uz: string;
+  image: string;
+  id: string;
+  name_uz: string;
+  name_ru: string;
+  price_usd: string;
+  price_uzs: string;
+  slug: string;
+}
 
-const productsInProduct = [
-  {
-    image: mikro,
-    label: "Название",
-    price: "4 500 000",
-  },
-  {
-    image: mikro,
-    label: "Название",
-    price: "4 500 000",
-  },
-  {
-    image: mikro,
-    label: "Название",
-    price: "4 500 000",
-  },
-];
+const SingleProductPage = ({ params }: Promise<{ productId: string }>) => {
+  const [product, setProduct] = useState<ProductsType | null>(null);
 
-const comments = [
-  {
-    name: "имя пользователя",
-    comment:
-      "съешь же ещё этих мягких французских булок, да выпей чаю съешь же ещё этих мягких французских булок, д",
-  },
-  {
-    name: "имя пользователя",
-    comment:
-      "съешь же ещё этих мягких французских булок, да выпей чаю съешь же ещё этих мягких французских булок, д",
-  },
-  {
-    name: "имя пользователя",
-    comment:
-      "съешь же ещё этих мягких французских булок, да выпей чаю съешь же ещё этих мягких французских булок, д",
-  },
-];
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const id = (await params).productId;
+        console.log(id);
+        const res = await $axios.get(`/product/${id}`);
+        setProduct(res.data);
+      } catch (err) {
+        console.error("Ошибка при загрузке товара:", err);
+      }
+    };
+    getProduct();
+  }, [params]);
 
-const SingleProductPage = () => {
+  if (!product) {
+    return (
+      <div className="flex justify-center items-center min-h-screen text-white">
+        Товар не найден
+      </div>
+    );
+  }
+
   return (
-    <div className="mt-16 font-sans bg-black min-h-screen ">
-      <div className="bg-[#1A1A1A] py-20">
-        <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row space-y-10 lg:space-y-0 lg:space-x-20">
-          <div className="flex flex-wrap justify-center lg:flex-col lg:space-y-5 lg:items-center space-x-5 lg:space-x-0">
-            {productData.images.map((item, idx) => (
-              <Image
-                src={item}
-                alt={"fdsdsf"}
-                className="bg-[#404040] border border-[#D3176D]"
-                key={idx}
-                width={100}
-                height={100}
-              />
-            ))}
-          </div>
-          <Image
-            src={productData.productImage}
-            alt={productData.title}
-            width={400}
-            height={400}
-            className="mx-auto"
-          />
-          <div className="text-white flex flex-col space-y-3">
-            <p className="text-2xl font-semibold">{productData.title}</p>
-            <p>{productData.model}</p>
-            <p>( {productData.totalRates} отзывов )</p>
-            <p>{productData.description}</p>
-            <p>{productData.price} Сум</p>
-            <div className="flex space-x-5">
-              <button className="bg-[#D3176D] border border-[#D3176D] px-5 py-1 text-sm">
-                Купить
-              </button>
-              <button className=" border border-[#D3176D] px-5 py-1 text-sm">
-                В Корзину
-              </button>
-            </div>
+    <div className="max-w-7xl mx-auto px-6 py-12 text-white mt-16 min-h-screen">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="flex gap-4">
+          <div className="relative w-full h-[400px] bg-[#1a1a1a] rounded-xl overflow-hidden">
+            <Image
+              src={product.image}
+              alt={product.name_ru}
+              fill
+              className="object-contain"
+            />
           </div>
         </div>
-        <div className="max-w-[1200px] mx-auto mt-20">
-          <h2 className="text-white text-3xl font-semibold mb-10 text-center">
-            Похожие товары
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {productsInProduct.map((item, idx) => (
-              <div
-                key={idx}
-                className="relative flex flex-col justify-between cursor-pointer bg-[#1E1E1E] shadow-sm shadow-slate-700 p-5 text-white space-y-5 rounded-lg"
-              >
-                <Heart className="absolute top-5 right-5" />
-                <Link href={"/"}>
-                  <Image
-                    src={item.image}
-                    alt={item.label}
-                    width={150}
-                    height={200}
-                    className="mx-auto"
-                  />
-                </Link>
-                <div className="text-center">
-                  <p className="text-sm text-slate-500">{item.label}</p>
-                  <p className="text-xl font-semibold">{item.price} сум</p>
-                </div>
-              </div>
-            ))}
+        <div>
+          <h1 className="text-3xl font-bold">{product.name_ru}</h1>
+          <p className="text-gray-400 mt-1">Название модели</p>
+
+          <div className="flex items-center gap-2 mt-2">
+            <div className="flex gap-1 text-pink-500 text-lg">★★★★☆</div>
+            <span className="text-sm text-gray-400">(1323 отзыва)</span>
+          </div>
+
+          <p className="text-3xl font-bold text-white mt-4">
+            {parseInt(product.price_uzs).toLocaleString("ru-RU")} сум
+          </p>
+
+          <p className="mt-4 text-gray-300 leading-relaxed max-w-xl">
+            {product.description_ru}
+          </p>
+
+          <div className="flex gap-4 mt-6">
+            <button className="bg-pink-500 hover:bg-pink-600 px-6 py-3 rounded-lg font-bold transition">
+              Купить
+            </button>
+            <button className="border border-pink-500 px-6 py-3 rounded-lg text-white hover:bg-pink-600 transition">
+              В корзину
+            </button>
+          </div>
+
+          <div className="flex gap-4 mt-4 text-sm text-gray-400">
+            <span>🚚 Доставка</span>
+            <span>❓ Нужна помощь?</span>
           </div>
         </div>
       </div>
-      <div className="max-w-[1200px] mx-auto text-white flex flex-col space-y-7">
-        <h2 className="text-4xl font-bold text-center mt-16">
-          Отзывы наших клиентов
-        </h2>
-        <p className="text-center">
-          Об этом лучше всего расскажут сами наши клиенты!
-        </p>
-        <div className="flex flex-col md:flex-row gap-10 overflow-x-auto py-5">
-          {comments.map((item, idx) => (
+      <div className="mt-16">
+        <h2 className="text-2xl font-semibold mb-6">Похожие товары</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {[1, 2, 3, 4].map((_, i) => (
             <div
-              className="border border-[#D3176D] bg-[#1E1E1E] rounded-lg py-5 px-8 w-full md:w-[400px] flex flex-col space-y-4 shadow-md"
-              key={idx}
+              key={i}
+              className="bg-[#1a1a1a] p-4 rounded-xl text-center hover:shadow-lg transition"
             >
-              <div className="flex items-center space-x-3">
-                <div className="border-4 border-[#D3176D] p-3 rounded-full">
-                  <User size={30} className="text-white" />
-                </div>
-                <p className="font-semibold text-lg">{item.name}</p>
+              <div className="relative w-full h-40 mb-4">
+                <Image
+                  src={product.image}
+                  alt="similar product"
+                  fill
+                  className="object-contain"
+                />
               </div>
-              <p className="text-gray-300">{item.comment}</p>
+              <p className="text-white font-semibold">Название</p>
+              <p className="text-pink-500 font-bold">4 500 000 сум</p>
             </div>
           ))}
         </div>

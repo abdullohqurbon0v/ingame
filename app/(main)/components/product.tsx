@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 interface NewsTypes {
@@ -37,7 +38,9 @@ const Product = ({ item }: NewsTypes) => {
         {item.description_ru}
       </p>
       <div className="flex items-center space-x-2 justify-start">
-        <button className="px-5 py-1 border text-sm">Подробнее</button>
+        <Link href={`/product/${item.slug}`}>
+          <button className="px-5 py-1 border text-sm">Подробнее</button>
+        </Link>
         <button className="bg-[#D3176D] border border-[#D3176D] px-5 py-1 text-sm">
           Купить
         </button>

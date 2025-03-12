@@ -6,6 +6,7 @@ import { User } from "lucide-react";
 import { $axios } from "@/http/api";
 import { DesktopType } from "@/types";
 import Link from "next/link";
+import Loading from "./loading";
 
 const comments = [
   {
@@ -49,15 +50,28 @@ const SingleProductPage = ({ id }: SingleProductPageProps) => {
     fetchData();
   }, [id]);
 
+  const handleAddToCart = () => {
+    if (!product) return;
+
+    const existingCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
+
+    const newItem = {
+      image: product.image,
+      title: product.name_ru,
+      details: product.description_ru.slice(0, 50) + "...",
+      availability: "В наличии",
+      quantity: 1,
+      price: product.price_uzs.toString(),
+    };
+
+    const updatedCart = [...existingCart, newItem];
+    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+
+    alert("Товар добавлен в корзину!");
+  };
+
   if (!product) {
-    return (
-      <div className="flex justify-center items-center h-screen bg-black">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-white text-lg">Загрузка...</p>
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
@@ -80,7 +94,10 @@ const SingleProductPage = ({ id }: SingleProductPageProps) => {
               <button className="bg-[#D3176D] border border-[#D3176D] px-5 py-1 text-sm">
                 Купить
               </button>
-              <button className="border border-[#D3176D] px-5 py-1 text-sm">
+              <button
+                onClick={handleAddToCart}
+                className="border border-[#D3176D] px-5 py-1 text-sm hover:bg-[#D3176D] transition"
+              >
                 В Корзину
               </button>
             </div>
@@ -124,8 +141,6 @@ const SingleProductPage = ({ id }: SingleProductPageProps) => {
             </div>
           </div>
         </div>
-
-        {/* Похожие товары */}
         {desktops.length > 1 && (
           <div className="max-w-[1200px] mx-auto mt-20 text-white">
             <h2 className="text-3xl font-bold mb-8">Похожие товары</h2>
@@ -162,8 +177,6 @@ const SingleProductPage = ({ id }: SingleProductPageProps) => {
           </div>
         )}
       </div>
-
-      {/* Отзывы */}
       <div className="max-w-[1200px] mx-auto text-white flex flex-col space-y-7">
         <h2 className="text-4xl font-bold text-center mt-16">
           Отзывы наших клиентов

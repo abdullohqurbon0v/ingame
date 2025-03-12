@@ -1,5 +1,3 @@
-// app/desktops/[id]/page.tsx
-
 import SingleProductPage from "../../components/singleDesktopPage";
 
 const Page = ({ params }: { params: { id: string } }) => {

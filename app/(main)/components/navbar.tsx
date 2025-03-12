@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/sheet";
 import Products from "./navbar/products";
 import { useRouter } from "next/navigation";
+import ProductsAccordion from "./mobile-accordions";
 
 const Navbar = () => {
   const [search, setSearch] = useState("");
@@ -50,12 +51,12 @@ const Navbar = () => {
             href="/"
             className="font-bold text-xl tracking-wide hover:text-[#D3176D] transition-colors"
           >
-            <span className="text-[#D3176D]">InGame</span>.uz
+            <span className="text-[#D3176D]">OutGame</span>.uz
           </Link>
-          <Products />
+          <Products mobile />
           <Link
             href="/brands"
-            className="text-sm hover:text-[#D3176D] transition-colors"
+            className="text-sm hidden sm:block hover:text-[#D3176D] transition-colors"
           >
             О бренде
           </Link>
@@ -180,13 +181,133 @@ const Navbar = () => {
               </button>
             </SheetTrigger>
 
-            <SheetContent>
+            <SheetContent className="bg-[#1a1a1a] text-white">
               <SheetHeader>
-                <SheetTitle className="text-lg">Меню</SheetTitle>
-                <SheetDescription>
-                  Здесь будет мобильная навигация.
+                <SheetTitle className="text-lg font-bold">Меню</SheetTitle>
+                <SheetDescription className="text-sm text-neutral-400">
+                  Навигация по сайту
                 </SheetDescription>
               </SheetHeader>
+
+              <div className="mt-6 flex flex-col gap-4 text-base font-medium">
+                <Link
+                  href="/"
+                  className="hover:text-[#D3176D] transition-colors"
+                >
+                  Главная
+                </Link>
+                <ProductsAccordion />
+                <Products mobile />
+                <Link
+                  href="/brands"
+                  className="hover:text-[#D3176D] transition-colors"
+                >
+                  О бренде
+                </Link>
+              </div>
+              <div className="mt-8">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full border-[#D3176D] text-white hover:text-[#D3176D]"
+                    >
+                      Связаться
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px] text-center space-y-4">
+                    <DialogTitle>
+                      <p className="text-xl font-bold">
+                        <span className="text-[#D3176D]">Оставьте заявку</span>{" "}
+                        <br /> и наш менеджер свяжется с вами
+                      </p>
+                    </DialogTitle>
+                    <DialogDescription className="text-sm text-muted-foreground">
+                      Мы ответим в течение рабочего дня.
+                    </DialogDescription>
+                    <form className="space-y-4 text-left">
+                      <div className="space-y-1">
+                        <label
+                          htmlFor="fullName"
+                          className="text-sm font-medium text-white"
+                        >
+                          Полное имя
+                        </label>
+                        <Input
+                          id="fullName"
+                          placeholder="Иван Иванов"
+                          className="bg-[#2a2a2a] text-white border-none focus:ring-1 focus:ring-[#D3176D]"
+                          required
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label
+                          htmlFor="phone"
+                          className="text-sm font-medium text-white"
+                        >
+                          Номер телефона
+                        </label>
+                        <Input
+                          id="phone"
+                          type="tel"
+                          placeholder="+998 90 123 45 67"
+                          className="bg-[#2a2a2a] text-white border-none focus:ring-1 focus:ring-[#D3176D]"
+                          required
+                        />
+                      </div>
+                      <Button
+                        type="submit"
+                        className="w-full bg-[#D3176D] text-white hover:bg-[#b2145a]"
+                      >
+                        Отправить
+                      </Button>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <div className="mt-6 flex flex-col gap-3">
+                <div className="text-sm text-muted-foreground">Язык</div>
+                <Select>
+                  <SelectTrigger className="w-full bg-[#2a2a2a] border-none text-white">
+                    <SelectValue placeholder="RU" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="RU">RU</SelectItem>
+                      <SelectItem value="UZ">UZ</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+
+                <div className="text-sm text-muted-foreground mt-4">Валюта</div>
+                <Select>
+                  <SelectTrigger className="w-full bg-[#2a2a2a] border-none text-white">
+                    <SelectValue placeholder="UZS" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="UZS">UZS</SelectItem>
+                      <SelectItem value="USD">USD</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              <form className="mt-6">
+                <Input
+                  type="search"
+                  name="search"
+                  placeholder="Поиск..."
+                  className="w-full text-sm bg-[#2a2a2a] text-white border-none focus:ring-1 focus:ring-[#D3176D]"
+                />
+              </form>
+              <div className="mt-6">
+                <Link
+                  href="/card"
+                  className="flex items-center justify-center w-full px-4 py-2 rounded-md border border-white hover:border-[#D3176D] hover:text-[#D3176D] transition"
+                >
+                  Перейти в корзину
+                </Link>
+              </div>
             </SheetContent>
           </Sheet>
         </div>

@@ -23,6 +23,7 @@ import {
   ServiceType,
   VideoType,
 } from "@/types";
+import Loading from "./components/loading";
 
 const MainPage = () => {
   const [banners, setBanners] = useState<BannerType[]>([]);
@@ -61,14 +62,7 @@ const MainPage = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen bg-black">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-white text-lg">Загрузка...</p>
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
@@ -82,24 +76,28 @@ const MainPage = () => {
       >
         {banners.map((item) => (
           <SwiperSlide key={item.id}>
-            <div className="flex justify-between py-64">
-              <div className="w-[700px] flex flex-col items-start space-y-5">
+            <div className="flex flex-col-reverse lg:flex-row items-center justify-between py-10 lg:py-32 px-4 sm:px-8">
+              {/* Текстовая часть */}
+              <div className="w-full lg:w-1/2 flex flex-col items-start space-y-5 text-center lg:text-left">
                 <div>
-                  <h1 className="text-5xl font-semibold mb-2">
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold mb-2">
                     {item.title_uz}
                   </h1>
-                  <p>{item.description_uz}</p>
+                  <p className="text-sm sm:text-base">{item.description_uz}</p>
                 </div>
-                <button className="px-5 py-3 border border-[#D3176D]">
+                <button className="px-5 py-3 border border-[#D3176D] hover:bg-[#D3176D] transition">
                   Подробнее
                 </button>
               </div>
-              <Image
-                src={item.image}
-                alt="Banner image"
-                width={400}
-                height={400}
-              />
+              <div className="w-full lg:w-1/2 flex justify-center mb-8 lg:mb-0">
+                <Image
+                  src={item.image}
+                  alt="Banner image"
+                  width={400}
+                  height={400}
+                  className="w-[250px] sm:w-[300px] md:w-[350px] lg:w-[400px] object-contain"
+                />
+              </div>
             </div>
           </SwiperSlide>
         ))}
