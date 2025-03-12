@@ -5,5 +5,6 @@ interface PageProps {
 }
 
 export default async function Page({ params }: PageProps) {
-  return <SingleProductPage id={await params.id} />;
+  const id = (await params).id;
+  return <SingleProductPage id={id} />;
 }
