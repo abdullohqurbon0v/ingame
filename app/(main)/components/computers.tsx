@@ -39,7 +39,7 @@ interface ComputersTypes {
 
 const Computers = ({ item }: ComputersTypes) => {
   const router = useRouter();
-  const onNavigateProduct = (query: string) => {
+  const onNavigateProduct = (query: number) => {
     router.push(`/category/${query}`);
   };
   return (
@@ -96,13 +96,13 @@ const Computers = ({ item }: ComputersTypes) => {
       <div className="flex space-x-5">
         <button
           className="px-5 py-1 border  text-sm"
-          onClick={() => router.push(`/usluga/${item.id}`)}
+          onClick={() => router.push(`/desktops/${item.id}`)}
         >
           Подробнее
         </button>
         <button
           className="px-5 py-1 border border-[#D3176D] text-sm"
-          onClick={() => onNavigateProduct(item.category.type)}
+          onClick={() => onNavigateProduct(item.id)}
         >
           Купить
         </button>

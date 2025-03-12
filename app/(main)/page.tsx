@@ -32,6 +32,8 @@ const MainPage = () => {
   const [services, serServices] = useState<ServiceType[]>([]);
   const [blogs, setBlogs] = useState<BlogTypes[]>([]);
   const [videos, setVideos] = useState<VideoType[]>([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     async function getDatas() {
       try {
@@ -49,13 +51,25 @@ const MainPage = () => {
         setBlogs(blogs.data);
         const videos = await $axios.get("/testimonials");
         setVideos(videos.data);
-        console.log(videos);
+        setLoading(false);
       } catch (error) {
         console.log(error);
+        setLoading(false);
       }
     }
     getDatas();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-black">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-white text-lg">Загрузка...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="mt-16 text-white">
