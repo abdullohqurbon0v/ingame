@@ -1,10 +1,7 @@
 "use client";
-import React, { useState } from "react";
-import Product from "../../components/product";
-import { data } from "@/constants";
+import React from "react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
 
 const brangs = [
   "GIGABYTE Aorus",
@@ -19,15 +16,8 @@ const monitors = ["24", "27", "32"];
 
 const mouses = ["Игровая", "Офисная"];
 
-const ITEMS_PER_PAGE = 12;
-
 const Category = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentProducts = data.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-
+  // const [currentPage, setCurrentPage] = useState(1);
   return (
     <div className="bg-[#1A1A1A]">
       <div className="max-w-[1200px] mx-auto flex space-x-10 pt-40 text-white">
@@ -77,12 +67,12 @@ const Category = () => {
         <div>
           <h1 className="text-3xl font-semibold mb-7">Игровые ПК</h1>
           <div className="grid grid-cols-3 gap-5">
-            {currentProducts.map((item, idx) => (
+            {/* {currentProducts.map((item, idx) => (
               <Product key={idx} item={item} />
-            ))}
+            ))} */}
           </div>
           <div className="flex justify-center space-x-2 mt-10">
-            <Button
+            {/* <Button
               disabled={currentPage === 1}
               onClick={() => setCurrentPage((prev) => prev - 1)}
             >
@@ -104,7 +94,7 @@ const Category = () => {
               onClick={() => setCurrentPage((prev) => prev + 1)}
             >
               ❯
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>
