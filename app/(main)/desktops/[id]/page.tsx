@@ -4,8 +4,6 @@ interface PageProps {
   params: { id: string };
 }
 
-const Page = ({ params }: PageProps) => {
+export default async function Page({ params }: PageProps) {
   return <SingleProductPage id={params.id} />;
-};
-
-export default Page;
+}
