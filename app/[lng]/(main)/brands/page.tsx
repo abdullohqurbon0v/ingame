@@ -2,8 +2,10 @@ import Image from "next/image";
 import React from "react";
 import Footer from "../components/footer";
 import Accordions from "../components/accordions";
+import { useParams } from "next/navigation";
 
 const BrandsPage = () => {
+  const { lng } = useParams<{ lng: string }>();
   return (
     <div className="bg-[#1a1a1a]">
       <div className="mt-16 max-w-[1200px] mx-auto py-32 space-y-8 ">
@@ -67,7 +69,7 @@ const BrandsPage = () => {
             дружим и работаем с самого основания компании.
           </p>
         </div>
-        <Accordions />
+        <Accordions lng={lng} />
         <Footer />
       </div>
     </div>
