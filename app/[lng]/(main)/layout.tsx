@@ -1,20 +1,23 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react"; // Import Suspense
 import Navbar from "./components/navbar";
 import { ChildProps } from "@/types";
 import { useParams } from "next/navigation";
 
-// Define a type for the params to constrain lng
 type Params = {
-  lng: string;
+  lng?: string;
 };
 
 const MainLayout = ({ children }: ChildProps) => {
   const params = useParams<Params>();
+  const lng = params.lng || "ru";
 
   return (
     <div className="font-orbitron bg-black">
-      <Navbar lng={params.lng} />
+      {/* Wrap Navbar in Suspense */}
+      <Suspense fallback={<div>Loading...</div>}>
+        <Navbar lng={lng} />
+      </Suspense>
       <main>{children}</main>
     </div>
   );
