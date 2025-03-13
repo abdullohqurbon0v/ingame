@@ -8,6 +8,7 @@ import Product from "../components/product";
 import Accordions from "../components/accordions";
 import Blogs from "../components/blogs";
 import Footer from "../components/footer";
+import Loading from "../components/loading";
 
 const SearchPage = () => {
   const [products, setProducts] = useState<ProductsType[]>([]);
@@ -25,6 +26,10 @@ const SearchPage = () => {
     };
     getSearchParams();
   }, [query]);
+
+  if (products.length === 0) {
+    return <Loading />;
+  }
 
   return (
     <div className="min-h-screen mt-16 text-white">

@@ -24,8 +24,12 @@ import {
   VideoType,
 } from "@/types";
 import Loading from "./components/loading";
+import { useParams } from "next/navigation";
+import { useTranslation } from "@/i18n/client";
 
 const MainPage = () => {
+  const { lng } = useParams();
+  const { t } = useTranslation(lng as string);
   const [banners, setBanners] = useState<BannerType[]>([]);
   const [catalogs, setCatalogs] = useState<CatalogsType[]>([]);
   const [desktops, setDesktops] = useState<DesktopType[]>([]);
@@ -77,17 +81,18 @@ const MainPage = () => {
         {banners.map((item) => (
           <SwiperSlide key={item.id}>
             <div className="flex flex-col-reverse lg:flex-row items-center justify-between py-10 lg:py-32 px-4 sm:px-8">
-              {/* Текстовая часть */}
               <div className="w-full lg:w-1/2 flex flex-col items-start space-y-5 text-center lg:text-left">
                 <div>
                   <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold mb-2">
-                    {item.title_uz}
+                    {lng == "uz" ? item.title_uz : item.title_ru}
                   </h1>
-                  <p className="text-sm sm:text-base">{item.description_uz}</p>
+                  <p className="text-sm sm:text-base">
+                    {lng == "uz" ? item.description_uz : item.description_ru}
+                  </p>
                 </div>
-                <button className="px-5 py-3 border border-[#D3176D] hover:bg-[#D3176D] transition">
+                {/* <button className="px-5 py-3 border border-[#D3176D] hover:bg-[#D3176D] transition">
                   Подробнее
-                </button>
+                </button> */}
               </div>
               <div className="w-full lg:w-1/2 flex justify-center mb-8 lg:mb-0">
                 <Image
@@ -104,28 +109,28 @@ const MainPage = () => {
       </Swiper>
       <div className="bg-[#0F0F0F]">
         <div className="max-w-[1200px] text-center mx-auto py-16">
-          <h2 className="text-3xl mb-2">КАТАЛОГ INGAME.UZ</h2>
-          <p>Выберите себе в каталоге для максимально комфортной игры</p>
+          <h2 className="text-3xl mb-2">{t("catalogtitle")}</h2>
+          <p>{t("catalogdescribe")}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {catalogs.map((item) => (
-              <Categories key={item.id} item={item} />
+              <Categories key={item.id} item={item} lng={lng} />
             ))}
           </div>
         </div>
       </div>
       <div className="bg-[#1A1A1A]">
         <div className="max-w-[1200px] mx-auto py-16">
-          <h1 className="text-3xl font-bold">Наши ПК</h1>
+          <h1 className="text-3xl font-bold">{t("pktitle")}</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12 ">
             {desktops.map((item) => (
-              <Computers key={item.id} item={item} />
+              <Computers key={item.id} item={item} lng={lng} />
             ))}
           </div>
         </div>
       </div>
       <div className="bg-[#1A1A1A]">
         <div className="max-w-[1200px] mx-auto py-16">
-          <h1 className="text-3xl font-bold">Новинки</h1>
+          <h1 className="text-3xl font-bold">{t("productstitle")}</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-12 px-12">
             {products.map((item, idx) => (
               <Product key={idx} item={item} />
@@ -135,7 +140,7 @@ const MainPage = () => {
       </div>
       <div className="bg-[#1A1A1A]">
         <div className="max-w-[1200px] mx-auto py-16">
-          <h1 className="text-3xl font-bold">Услуги</h1>
+          <h1 className="text-3xl font-bold">{t("servicetitle")}</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-12 px-12">
             {services.map((item, idx) => (
               <Usluga key={idx} item={item} />

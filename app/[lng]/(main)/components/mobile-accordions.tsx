@@ -9,6 +9,7 @@ import {
 import { useRouter } from "next/navigation";
 import React from "react";
 import clsx from "clsx";
+import { useTranslation } from "@/i18n/client";
 
 const categories = [
   { key: "gaming", title: "Игровые ПК" },
@@ -64,8 +65,8 @@ const subcategories: Record<
     { title: "Хранение", subtitle: "SSD, HDD и не только" },
   ],
 };
-
-const ProductsAccordion = () => {
+export const ProductsAccordion = ({ lang }: { lang: string }) => {
+  const { t } = useTranslation(lang);
   const router = useRouter();
 
   const handleNavigate = (categoryKey: string, subTitle: string) => {
@@ -78,7 +79,7 @@ const ProductsAccordion = () => {
       {categories.map((cat) => (
         <AccordionItem value={cat.key} key={cat.key}>
           <AccordionTrigger className="text-left text-base font-semibold hover:text-[#D3176D] transition-colors">
-            {cat.title}
+            {t(`categories.${cat.key}`)}
           </AccordionTrigger>
           <AccordionContent className="space-y-2 px-2 pb-4">
             {subcategories[cat.key]?.map((sub, idx) => (
@@ -90,15 +91,19 @@ const ProductsAccordion = () => {
                   sub.active && "text-pink-500"
                 )}
               >
-                <div className="font-medium">{sub.title}</div>
-                <div className="text-xs text-gray-400">{sub.subtitle}</div>
+                <div className="font-medium">
+                  {t(`subcategories.${sub.title}`)}
+                </div>
+                <div className="text-xs text-gray-400">
+                  {t("common.subtitle")}
+                </div>
               </div>
             ))}
             <button
               onClick={() => router.push(`/category/${cat.key}`)}
               className="mt-3 w-full bg-white text-black rounded-full px-4 py-2 text-sm font-medium hover:bg-gray-100 transition"
             >
-              Посмотреть все в наличии
+              {t("common.seeAll")}
             </button>
           </AccordionContent>
         </AccordionItem>
@@ -106,5 +111,3 @@ const ProductsAccordion = () => {
     </Accordion>
   );
 };
-
-export default ProductsAccordion;

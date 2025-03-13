@@ -30,12 +30,23 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Products from "./navbar/products";
-import { useRouter } from "next/navigation";
-import ProductsAccordion from "./mobile-accordions";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ProductsAccordion } from "./mobile-accordions";
+import { useTranslation } from "@/i18n/client";
 
-const Navbar = () => {
+const Navbar = ({ lng }: { lng: string }) => {
+  const { t } = useTranslation(lng);
   const [search, setSearch] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const lang = lng;
+
+  const handleLanguageChange = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("lang", value);
+    router.push(`/${value}`);
+  };
+
   const onSearchProducts = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     router.push(`/search?query=${search}`);
@@ -48,17 +59,17 @@ const Navbar = () => {
       <header className="flex justify-between items-center px-6 h-full max-w-[1200px] mx-auto text-white">
         <div className="flex items-center space-x-8">
           <Link
-            href="/"
+            href={`/${lang}`}
             className="font-bold text-xl tracking-wide hover:text-[#D3176D] transition-colors"
           >
             <span className="text-[#D3176D]">OutGame</span>.uz
           </Link>
-          <Products />
+          <Products lang={lang} />
           <Link
-            href="/brands"
+            href={`/brands?lang=${lang}`}
             className="text-sm hidden sm:block hover:text-[#D3176D] transition-colors"
           >
-            О бренде
+            {t("navaboutbrand")}
           </Link>
         </div>
 
@@ -69,7 +80,7 @@ const Navbar = () => {
                 variant="ghost"
                 className="hidden sm:block text-sm hover:text-[#D3176D] transition-colors"
               >
-                Связаться
+                {t("connectnav")}
               </Button>
             </DialogTrigger>
 
@@ -83,8 +94,6 @@ const Navbar = () => {
               <DialogDescription className="text-sm text-muted-foreground">
                 Мы ответим в течение рабочего дня.
               </DialogDescription>
-
-              {/* Форма */}
               <form className="space-y-4 text-left">
                 <div className="space-y-1">
                   <label
@@ -127,19 +136,18 @@ const Navbar = () => {
             </DialogContent>
           </Dialog>
 
-          <Select>
+          <Select value={lang} onValueChange={handleLanguageChange}>
             <SelectTrigger className="hidden sm:flex w-[100px] text-sm">
-              <SelectValue placeholder="RU" />
+              <SelectValue placeholder={lang.toUpperCase()} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="RU">RU</SelectItem>
-                <SelectItem value="UZ">UZ</SelectItem>
+                <SelectItem value="ru">RU</SelectItem>
+                <SelectItem value="uz">UZ</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
 
-          {/* Currency Selector */}
           <Select>
             <SelectTrigger className="hidden sm:flex w-[100px] text-sm">
               <SelectValue placeholder="UZS" />
@@ -152,7 +160,6 @@ const Navbar = () => {
             </SelectContent>
           </Select>
 
-          {/* Search Input */}
           <form
             className="hidden sm:block w-[200px]"
             onSubmit={onSearchProducts}
@@ -165,15 +172,13 @@ const Navbar = () => {
             />
           </form>
 
-          {/* Cart Icon */}
-          <Link href="/card" className="hidden sm:block">
+          <Link href={`/card?lang=${lang}`} className="hidden sm:block">
             <ShoppingCart
               size={22}
               className="cursor-pointer hover:text-[#D3176D] transition-colors"
             />
           </Link>
 
-          {/* Mobile Menu */}
           <Sheet>
             <SheetTrigger asChild>
               <button className="block sm:hidden">
@@ -191,20 +196,20 @@ const Navbar = () => {
 
               <div className="mt-6 flex flex-col gap-4 text-base font-medium">
                 <Link
-                  href="/"
+                  href={`/?lang=${lang}`}
                   className="hover:text-[#D3176D] transition-colors"
                 >
                   Главная
                 </Link>
-                <ProductsAccordion />
-                <Products />
+                <ProductsAccordion lang={lang} />
                 <Link
-                  href="/brands"
+                  href={`/brands?lang=${lang}`}
                   className="hover:text-[#D3176D] transition-colors"
                 >
                   О бренде
                 </Link>
               </div>
+
               <div className="mt-8">
                 <Dialog>
                   <DialogTrigger asChild>
@@ -265,16 +270,17 @@ const Navbar = () => {
                   </DialogContent>
                 </Dialog>
               </div>
+
               <div className="mt-6 flex flex-col gap-3">
                 <div className="text-sm text-muted-foreground">Язык</div>
-                <Select>
+                <Select value={lang} onValueChange={handleLanguageChange}>
                   <SelectTrigger className="w-full bg-[#2a2a2a] border-none text-white">
-                    <SelectValue placeholder="RU" />
+                    <SelectValue placeholder={lang.toUpperCase()} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value="RU">RU</SelectItem>
-                      <SelectItem value="UZ">UZ</SelectItem>
+                      <SelectItem value="ru">RU</SelectItem>
+                      <SelectItem value="uz">UZ</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -292,17 +298,20 @@ const Navbar = () => {
                   </SelectContent>
                 </Select>
               </div>
-              <form className="mt-6">
+
+              <form className="mt-6" onSubmit={onSearchProducts}>
                 <Input
                   type="search"
                   name="search"
                   placeholder="Поиск..."
                   className="w-full text-sm bg-[#2a2a2a] text-white border-none focus:ring-1 focus:ring-[#D3176D]"
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </form>
+
               <div className="mt-6">
                 <Link
-                  href="/card"
+                  href={`/card`}
                   className="flex items-center justify-center w-full px-4 py-2 rounded-md border border-white hover:border-[#D3176D] hover:text-[#D3176D] transition"
                 >
                   Перейти в корзину

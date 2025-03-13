@@ -2,16 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-interface CategoryProps {
-  item: {
-    id: number;
-    image: string;
-    name_uz: string;
-    name_ru: string;
-  };
+interface CategoryItem {
+  id: number;
+  image: string;
+  name_uz: string;
+  name_ru: string;
 }
-
-const Categories = ({ item }: CategoryProps) => {
+const Categories = ({ item, lng }: { item: CategoryItem; lng: string }) => {
   return (
     <Link
       href={`/category/${item.name_uz}`}
@@ -24,7 +21,9 @@ const Categories = ({ item }: CategoryProps) => {
         className="mx-auto"
         height={100}
       />
-      <p className="text-center">{item.name_ru}</p>
+      <p className="text-center">
+        {lng === "uz" ? item.name_uz : item.name_ru}
+      </p>
     </Link>
   );
 };

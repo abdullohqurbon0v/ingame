@@ -89,6 +89,11 @@ const CartPage: React.FC = () => {
     }
   }, []);
 
+  // Save cart items to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
+
   const increaseQuantity = (index: number) => {
     const updated = [...cartItems];
     updated[index].quantity += 1;
@@ -107,6 +112,8 @@ const CartPage: React.FC = () => {
     const updated = [...cartItems];
     updated.splice(index, 1);
     setCartItems(updated);
+    // Save the updated cart to localStorage
+    localStorage.setItem("cartItems", JSON.stringify(updated));
   };
 
   const total = cartItems.reduce((acc, item) => {
