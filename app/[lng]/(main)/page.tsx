@@ -28,7 +28,7 @@ import { useParams } from "next/navigation";
 import { useTranslation } from "@/i18n/client";
 
 const MainPage = () => {
-  const { lng } = useParams();
+  const { lng } = useParams<{ lng: string }>();
   const { t } = useTranslation(lng as string);
   const [banners, setBanners] = useState<BannerType[]>([]);
   const [catalogs, setCatalogs] = useState<CatalogsType[]>([]);
