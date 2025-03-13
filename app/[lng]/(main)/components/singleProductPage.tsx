@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { $axios } from "@/http/api";
 import { useEffect, useState } from "react";
+import Loading from "./loading";
 
 export interface ProductsType {
   description_ru: string;
@@ -18,17 +19,27 @@ export interface ProductsType {
 
 export default function SingleProductPage(id: { id: string }) {
   const [product, setProduct] = useState<ProductsType | null>(null);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const getProduct = async () => {
+      setLoading(true);
+      console.log(id);
       try {
-        const res = await $axios.get(`/product/${id}`);
+        const res = await $axios.get(`/product/${id.id}`);
+        console.log(res);
         setProduct(res.data);
       } catch (err) {
         console.error("Ошибка при загрузке товара:", err);
+      } finally {
+        setLoading(false);
       }
     };
     getProduct();
   }, [id]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   if (!product) {
     return (
@@ -54,20 +65,12 @@ export default function SingleProductPage(id: { id: string }) {
         <div>
           <h1 className="text-3xl font-bold">{product.name_ru}</h1>
           <p className="text-gray-400 mt-1">Название модели</p>
-
-          <div className="flex items-center gap-2 mt-2">
-            <div className="flex gap-1 text-pink-500 text-lg">★★★★☆</div>
-            <span className="text-sm text-gray-400">(1323 отзыва)</span>
-          </div>
-
           <p className="text-3xl font-bold text-white mt-4">
             {parseInt(product.price_uzs).toLocaleString("ru-RU")} сум
           </p>
-
           <p className="mt-4 text-gray-300 leading-relaxed max-w-xl">
             {product.description_ru}
           </p>
-
           <div className="flex gap-4 mt-6">
             <button className="bg-pink-500 hover:bg-pink-600 px-6 py-3 rounded-lg font-bold transition">
               Купить
@@ -76,7 +79,6 @@ export default function SingleProductPage(id: { id: string }) {
               В корзину
             </button>
           </div>
-
           <div className="flex gap-4 mt-4 text-sm text-gray-400">
             <span>🚚 Доставка</span>
             <span>❓ Нужна помощь?</span>

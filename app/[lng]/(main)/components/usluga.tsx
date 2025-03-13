@@ -1,4 +1,6 @@
+import { useTranslation } from "@/i18n/client";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 interface UslugaProps {
@@ -12,9 +14,11 @@ interface UslugaProps {
     name_uz: string;
     name_ru: string;
   };
+  lng: string;
 }
 
-const Usluga = ({ item }: UslugaProps) => {
+const Usluga = ({ item, lng }: UslugaProps) => {
+  const { t } = useTranslation(lng);
   return (
     <div className="bg-[#1E1E1E] font-sans  flex flex-col space-y-3 shadow-xl rounded-xl pb-5">
       <Image
@@ -25,10 +29,14 @@ const Usluga = ({ item }: UslugaProps) => {
         className="mx-auto w-full"
       />
       <div className="flex flex-col space-y-3 px-4">
-        <p className="text-xl font-semibold text-[#D3176D]">{item.name_ru}</p>
-        <p>{item.min_description_ru}</p>
+        <p className="text-xl font-semibold text-[#D3176D]">
+          {lng == "uz" ? item.name_uz : item.name_ru}
+        </p>
+        <p>{lng == "uz" ? item.min_description_uz : item.min_description_ru}</p>
         <div className="flex items-center space-x-2 justify-start">
-          <button className="px-5 py-1 border text-sm">Подробнее</button>
+          <Link href={`/blog/${item.id}`}>
+            <button className="px-5 py-1 border text-sm">{t("more")}</button>
+          </Link>
         </div>
       </div>
     </div>

@@ -133,7 +133,7 @@ const MainPage = () => {
           <h1 className="text-3xl font-bold">{t("productstitle")}</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-12 px-12">
             {products.map((item, idx) => (
-              <Product key={idx} item={item} />
+              <Product key={idx} item={item} lng={lng} />
             ))}
           </div>
         </div>
@@ -143,14 +143,14 @@ const MainPage = () => {
           <h1 className="text-3xl font-bold">{t("servicetitle")}</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-12 px-12">
             {services.map((item, idx) => (
-              <Usluga key={idx} item={item} />
+              <Usluga key={idx} item={item} lng={lng} />
             ))}
           </div>
         </div>
       </div>
-      <Videos videos={videos} />
+      <Videos videos={videos} lng={lng} />
       <div className="bg-[#1A1A1A]">
-        <Accordions />
+        <Accordions lng={lng} />
       </div>
       <Blogs blogs={blogs} />
       <Footer />

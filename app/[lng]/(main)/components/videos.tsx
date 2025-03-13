@@ -1,16 +1,16 @@
+import { useTranslation } from "@/i18n/client";
 import { VideoType } from "@/types";
 import Image from "next/image";
 import React from "react";
 
-const Videos = ({ videos }: { videos: VideoType[] }) => {
+const Videos = ({ videos, lng }: { videos: VideoType[]; lng: string }) => {
+  const { t } = useTranslation(lng);
   return (
     <div className="max-w-[1200px] mx-auto mt-16 px-4 mb-24">
       <h2 className="text-white text-3xl md:text-5xl font-bold text-center">
-        Почему стоит выбрать нас?
+        {t("whyme")}
       </h2>
-      <p className="text-center text-gray-300 mt-2">
-        Об этом лучше всего расскажут сами наши клиенты!
-      </p>
+      <p className="text-center text-gray-300 mt-2">{t("askclient")}</p>
 
       <div className="overflow-x-auto flex space-x-6 mt-12 pb-4 scrollbar-this scrollbar-thumb-gray-500 scrollbar-track-gray-200">
         {videos.map((client, idx) => (
@@ -30,7 +30,9 @@ const Videos = ({ videos }: { videos: VideoType[] }) => {
             />
             <div className="mt-4">
               <h3 className="font-semibold">{client.name}</h3>
-              <p className="text-sm text-gray-400">{client.profession_ru}</p>
+              <p className="text-sm text-gray-400">
+                {lng == "uz" ? client.profession_uz : client.profession_ru}
+              </p>
             </div>
           </div>
         ))}

@@ -52,5 +52,11 @@
   "cooler": "Sovutish",
   "memory": "Xotira",
   "more": "Batafsil",
-  "buy": "Sotib olish"
+  "buy": "Sotib olish",
+  "whyme": "Nega aynan bizi tanlashingiz kerak ?",
+  "askclient": "Mijozlarimiz o'zlari sizga bu haqda eng yaxshi aytib berishadi!",
+  "questions": "Tez-tez so'raladigan savollar",
+  "ans": "Quyida siz mijozlarimizning eng mashhur savollariga javob topasiz.",
+  "1an": "O'yin kompyuterining o'rtacha narxi qancha?",
+  "2an": "Hammasi konfiguratsiyaga bog'liq. O‘yin kompyuterining narxi o‘rtacha 6 000 000 so‘mdan boshlanadi va undan yuqori."
 }

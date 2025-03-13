@@ -10,7 +10,7 @@ import Blogs from "../components/blogs";
 import Footer from "../components/footer";
 import Loading from "../components/loading";
 
-const SearchPage = () => {
+const SearchPage = ({ lng }: { lng: string }) => {
   const [products, setProducts] = useState<ProductsType[]>([]);
   const [blogs, setBlogs] = useState<BlogTypes[]>([]);
   const param = useSearchParams();
@@ -37,12 +37,12 @@ const SearchPage = () => {
         <h1 className="my-16 text-3xl font-semibold">Продукты</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {products.map((item) => (
-            <Product item={item} key={item.name_ru} />
+            <Product item={item} key={item.name_ru} lng={lng} />
           ))}
         </div>
       </div>
       <div className="my-16">
-        <Accordions />
+        <Accordions lng={lng} />
       </div>
       <Blogs blogs={blogs} />
       <Footer />

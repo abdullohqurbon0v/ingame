@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/i18n/client";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,9 +17,11 @@ interface NewsTypes {
     price_uzs: string;
     slug: string;
   };
+  lng: string;
 }
 
-const Product = ({ item }: NewsTypes) => {
+const Product = ({ item, lng }: NewsTypes) => {
+  const { t } = useTranslation(lng);
   return (
     <div className="bg-[#1E1E1E] font-sans pt-16 flex flex-col space-y-3 shadow-xl rounded-xl px-5 pb-5">
       <Image
@@ -28,22 +31,20 @@ const Product = ({ item }: NewsTypes) => {
         height={200}
         className="mx-auto"
       />
-      <p className="text-xl">{item.name_ru}</p>
+      <p className="text-xl">{lng == "uz" ? item.name_uz : item.name_ru}</p>
       <div>
         <p className="text-[#D3176D] text-xl font-semibold">
           {item.price_uzs} сум
         </p>
       </div>
       <p className="max-h-[200px] whitespace-nowrap truncate">
-        {item.description_ru}
+        {lng == "uz" ? item.description_uz : item.description_ru}
       </p>
       <div className="flex items-center space-x-2 justify-start">
-        <Link href={`/product/${item.slug}`}>
-          <button className="px-5 py-1 border text-sm">Подробнее</button>
+        <Link href={`/products/${item.slug}`}>
+          <button className="px-5 py-1 border text-sm">{t("more")}</button>
         </Link>
-        <button className="bg-[#D3176D] border border-[#D3176D] px-5 py-1 text-sm">
-          Купить
-        </button>
+
         <Button
           variant={"ghost"}
           className="hover:bg-transparent hover:text-white"
