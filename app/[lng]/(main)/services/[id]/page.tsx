@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import Loading from '../../components/loading'
 
-const page = () => {
+const Page = () => {
     const {id, lng} = useParams<{id: string, lng: string}>()
     const [service, setService] = useState<ServiceType | null>(null)
 
@@ -41,4 +41,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
