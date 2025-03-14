@@ -34,7 +34,7 @@ const Usluga = ({ item, lng }: UslugaProps) => {
         </p>
         <p>{lng == "uz" ? item.min_description_uz : item.min_description_ru}</p>
         <div className="flex items-center space-x-2 justify-start">
-          <Link href={`/blog/${item.id}`}>
+          <Link href={`/services/${item.id}`}>
             <button className="px-5 py-1 border text-sm">{t("more")}</button>
           </Link>
         </div>

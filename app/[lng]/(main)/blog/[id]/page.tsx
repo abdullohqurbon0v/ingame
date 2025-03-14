@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import { $axios } from "@/http/api";
 import { BlogTypes } from "@/types";
+import Loading from "../../components/loading";
 
 const SingleBlog = () => {
   const [blog, setBlog] = useState<BlogTypes | null>(null);
@@ -35,14 +36,7 @@ const SingleBlog = () => {
   }
 
   if (!blog) {
-    return (
-      <div className="flex justify-center items-center h-screen bg-black">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-white text-lg">Загрузка...</p>
-        </div>
-      </div>
-    );
+    return <Loading/>
   }
 
   return (
