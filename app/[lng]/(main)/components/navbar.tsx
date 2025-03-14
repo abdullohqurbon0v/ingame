@@ -66,7 +66,7 @@ const Navbar = ({ lng }: { lng: string }) => {
           </Link>
           <Products lang={lang} />
           <Link
-            href={`/brands?lang=${lang}`}
+            href={`/brands`}
             className="text-sm hidden sm:block hover:text-[#D3176D] transition-colors"
           >
             {t("navaboutbrand")}
@@ -87,12 +87,13 @@ const Navbar = ({ lng }: { lng: string }) => {
             <DialogContent className="sm:max-w-[425px] text-center space-y-4">
               <DialogTitle>
                 <p className="text-xl font-bold">
-                  <span className="text-[#D3176D]">Оставьте заявку</span> <br />
-                  и наш менеджер свяжется с вами
+                  <span className="text-[#D3176D]">{t("dialogtitle")}</span>{" "}
+                  <br />
+                  {t("dialogtitle2")}
                 </p>
               </DialogTitle>
               <DialogDescription className="text-sm text-muted-foreground">
-                Мы ответим в течение рабочего дня.
+                {t("answdialog")}
               </DialogDescription>
               <form className="space-y-4 text-left">
                 <div className="space-y-1">
@@ -100,7 +101,7 @@ const Navbar = ({ lng }: { lng: string }) => {
                     htmlFor="fullName"
                     className="text-sm font-medium text-white"
                   >
-                    Полное имя
+                    {t("fullname")}
                   </label>
                   <Input
                     id="fullName"
@@ -115,7 +116,7 @@ const Navbar = ({ lng }: { lng: string }) => {
                     htmlFor="phone"
                     className="text-sm font-medium text-white"
                   >
-                    Номер телефона
+                    {t("phonenumber")}
                   </label>
                   <Input
                     id="phone"
@@ -130,7 +131,7 @@ const Navbar = ({ lng }: { lng: string }) => {
                   type="submit"
                   className="w-full bg-[#D3176D] text-white hover:bg-[#b2145a] transition-colors"
                 >
-                  Отправить
+                  {t("send")}
                 </Button>
               </form>
             </DialogContent>
@@ -186,7 +187,7 @@ const Navbar = ({ lng }: { lng: string }) => {
               </button>
             </SheetTrigger>
 
-            <SheetContent className="bg-[#1a1a1a] text-white">
+            <SheetContent className="bg-[#1a1a1a] overflow-y-scroll text-white">
               <SheetHeader>
                 <SheetTitle className="text-lg font-bold">Меню</SheetTitle>
                 <SheetDescription className="text-sm text-neutral-400">

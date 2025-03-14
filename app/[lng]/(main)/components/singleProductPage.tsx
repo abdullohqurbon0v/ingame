@@ -4,6 +4,7 @@ import Image from "next/image";
 import { $axios } from "@/http/api";
 import { useEffect, useState } from "react";
 import Loading from "./loading";
+import { useTranslation } from "@/i18n/client"; // Предполагаем использование этой библиотеки
 
 export interface ProductsType {
   description_ru: string;
@@ -17,25 +18,31 @@ export interface ProductsType {
   slug: string;
 }
 
-export default function SingleProductPage(id: { id: string }) {
+export default function SingleProductPage({
+  id,
+  lng,
+}: {
+  id: string;
+  lng: string;
+}) {
+  const { t } = useTranslation(lng);
   const [product, setProduct] = useState<ProductsType | null>(null);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const getProduct = async () => {
       setLoading(true);
-      console.log(id);
       try {
-        const res = await $axios.get(`/product/${id.id}`);
-        console.log(res);
+        const res = await $axios.get(`/product/${id}`);
         setProduct(res.data);
       } catch (err) {
-        console.error("Ошибка при загрузке товара:", err);
+        console.error(t("error_loading_product"), err);
       } finally {
         setLoading(false);
       }
     };
     getProduct();
-  }, [id]);
+  }, [id, t]);
 
   if (loading) {
     return <Loading />;
@@ -44,7 +51,7 @@ export default function SingleProductPage(id: { id: string }) {
   if (!product) {
     return (
       <div className="flex justify-center items-center min-h-screen text-white">
-        Товар не найден
+        {t("product_not_found")}
       </div>
     );
   }
@@ -56,37 +63,42 @@ export default function SingleProductPage(id: { id: string }) {
           <div className="relative w-full h-[400px] bg-[#1a1a1a] rounded-xl overflow-hidden">
             <Image
               src={product.image}
-              alt={product.name_ru}
+              alt={lng === "uz" ? product.name_uz : product.name_ru}
               fill
               className="object-contain"
             />
           </div>
         </div>
         <div>
-          <h1 className="text-3xl font-bold">{product.name_ru}</h1>
-          <p className="text-gray-400 mt-1">Название модели</p>
+          <h1 className="text-3xl font-bold">
+            {lng === "uz" ? product.name_uz : product.name_ru}
+          </h1>
+          <p className="text-gray-400 mt-1">{t("model_name")}</p>
           <p className="text-3xl font-bold text-white mt-4">
-            {parseInt(product.price_uzs).toLocaleString("ru-RU")} сум
+            {parseInt(product.price_uzs).toLocaleString(
+              lng === "uz" ? "uz-UZ" : "ru-RU"
+            )}{" "}
+            {t("sum")}
           </p>
           <p className="mt-4 text-gray-300 leading-relaxed max-w-xl">
-            {product.description_ru}
+            {lng === "uz" ? product.description_uz : product.description_ru}
           </p>
           <div className="flex gap-4 mt-6">
             <button className="bg-pink-500 hover:bg-pink-600 px-6 py-3 rounded-lg font-bold transition">
-              Купить
+              {t("buy")}
             </button>
             <button className="border border-pink-500 px-6 py-3 rounded-lg text-white hover:bg-pink-600 transition">
-              В корзину
+              {t("add_to_cart")}
             </button>
           </div>
           <div className="flex gap-4 mt-4 text-sm text-gray-400">
-            <span>🚚 Доставка</span>
-            <span>❓ Нужна помощь?</span>
+            <span>🚚 {t("delivery")}</span>
+            <span>❓ {t("need_help")}</span>
           </div>
         </div>
       </div>
       <div className="mt-16">
-        <h2 className="text-2xl font-semibold mb-6">Похожие товары</h2>
+        <h2 className="text-2xl font-semibold mb-6">{t("related_products")}</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[1, 2, 3, 4].map((_, i) => (
             <div
@@ -96,13 +108,18 @@ export default function SingleProductPage(id: { id: string }) {
               <div className="relative w-full h-40 mb-4">
                 <Image
                   src={product.image}
-                  alt="similar product"
+                  alt={t("similar_product")}
                   fill
                   className="object-contain"
                 />
               </div>
-              <p className="text-white font-semibold">Название</p>
-              <p className="text-pink-500 font-bold">4 500 000 сум</p>
+              <p className="text-white font-semibold">{t("product_title")}</p>
+              <p className="text-pink-500 font-bold">
+                {parseInt("4500000").toLocaleString(
+                  lng === "uz" ? "uz-UZ" : "ru-RU"
+                )}{" "}
+                {t("sum")}
+              </p>
             </div>
           ))}
         </div>

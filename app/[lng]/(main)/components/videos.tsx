@@ -19,7 +19,7 @@ const Videos = ({ videos, lng }: { videos: VideoType[]; lng: string }) => {
             className="bg-[#1a1a1a] text-white rounded-2xl w-[250px] shrink-0 p-4 relative"
           >
             <div className="bg-pink-600 text-xs px-2 py-1 rounded-md absolute top-4 left-4 font-bold">
-              {client.review_ru}
+              {lng === "uz" ? client.review_uz : client.review_ru}
             </div>
             <Image
               src={client.image}

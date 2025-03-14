@@ -6,7 +6,6 @@ import Computers from "./components/computers";
 import Product from "./components/product";
 import { $axios } from "@/http/api";
 import Usluga from "./components/usluga";
-import Footer from "./components/footer";
 import Accordions from "./components/accordions";
 import Videos from "./components/videos";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -152,8 +151,7 @@ const MainPage = () => {
       <div className="bg-[#1A1A1A]">
         <Accordions lng={lng} />
       </div>
-      <Blogs blogs={blogs} />
-      <Footer />
+      <Blogs blogs={blogs} lng={lng} />
     </main>
   );
 };

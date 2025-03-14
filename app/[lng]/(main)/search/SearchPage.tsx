@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 import Product from "../components/product";
 import Accordions from "../components/accordions";
 import Blogs from "../components/blogs";
-import Footer from "../components/footer";
 import Loading from "../components/loading";
 
 const SearchPage = ({ lng }: { lng: string }) => {
@@ -33,8 +32,10 @@ const SearchPage = ({ lng }: { lng: string }) => {
 
   return (
     <div className="min-h-screen mt-16 text-white">
-      <div className="max-w-[1200px] mx-auto pt-6">
-        <h1 className="my-16 text-3xl font-semibold">Продукты</h1>
+      <div className="max-w-[1200px] mx-auto pt-6 px-6 sm:px-0">
+        <h1 className="my-16 text-3xl font-semibold">
+          {lng == "uz" ? "Majsulotlar" : "Прродукты"}
+        </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {products.map((item) => (
             <Product item={item} key={item.name_ru} lng={lng} />
@@ -44,8 +45,7 @@ const SearchPage = ({ lng }: { lng: string }) => {
       <div className="my-16">
         <Accordions lng={lng} />
       </div>
-      <Blogs blogs={blogs} />
-      <Footer />
+      <Blogs blogs={blogs} lng={lng} />
     </div>
   );
 };

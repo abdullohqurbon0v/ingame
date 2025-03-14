@@ -88,9 +88,6 @@ const CartPage: React.FC = () => {
       }
     }
   }, []);
-  useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  }, [cartItems]);
 
   const increaseQuantity = (index: number) => {
     const updated = [...cartItems];

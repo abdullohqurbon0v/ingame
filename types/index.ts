@@ -50,6 +50,7 @@ export interface DesktopType {
 }
 
 export interface ProductsType {
+  type: string;
   description_ru: string;
   description_uz: string;
   image: string;
