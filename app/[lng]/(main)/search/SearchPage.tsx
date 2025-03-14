@@ -25,6 +25,7 @@ const SearchPage = ({ lng }: { lng: string }) => {
     };
     getSearchParams();
   }, [query]);
+  
 
   if (products.length === 0) {
     return <Loading />;

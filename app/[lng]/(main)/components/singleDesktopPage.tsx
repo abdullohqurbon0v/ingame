@@ -18,6 +18,7 @@ const SingleProductPage = ({ id, lng }: SingleProductPageProps) => {
   const { t } = useTranslation(lng);
   const [desktops, setDesktops] = useState<DesktopType[]>([]);
   const [product, setProduct] = useState<DesktopType>();
+  const [valute, setValute] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +32,8 @@ const SingleProductPage = ({ id, lng }: SingleProductPageProps) => {
         console.error(t("error_loading_data"), err); 
       }
     };
-
+    const valute = localStorage.getItem('valute')
+    setValute(valute as string)
     fetchData();
   }, [id, t]);
 
@@ -82,7 +84,7 @@ const SingleProductPage = ({ id, lng }: SingleProductPageProps) => {
               {lng === "uz" ? product.description_uz : product.description_ru}
             </p>
             <p className="text-xl font-bold">
-              {product.price_uzs} {t("sum")}
+              {valute === 'UZS' ? product.price_uzs: product.price_usd} {valute === 'UZS' ? t("sum") : "$"}
             </p>
 
             <div className="flex space-x-5">

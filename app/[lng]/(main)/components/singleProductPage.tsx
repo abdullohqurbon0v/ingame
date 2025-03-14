@@ -26,8 +26,10 @@ export default function SingleProductPage({
   lng: string;
 }) {
   const { t } = useTranslation(lng);
+  const [products, setProducts] = useState<ProductsType[]>([])
   const [product, setProduct] = useState<ProductsType | null>(null);
   const [loading, setLoading] = useState(false);
+  const [valute, setValute] = useState('')
 
   useEffect(() => {
     const getProduct = async () => {
@@ -35,6 +37,9 @@ export default function SingleProductPage({
       try {
         const res = await $axios.get(`/product/${id}`);
         setProduct(res.data);
+        const products = await $axios.get(`/combined?catalog_id=${res.data.catalog.id}`)
+        setProducts([...products.data.desktops, ...products.data.products])
+        console.log(products)
       } catch (err) {
         console.error(t("error_loading_product"), err);
       } finally {
@@ -68,6 +73,11 @@ export default function SingleProductPage({
     alert(t("added_to_cart"));
   };
 
+  useEffect(() => {
+    const valute = localStorage.getItem('valute')
+    setValute(valute as string)
+  }, [])
+
 
   if (loading) {
     return <Loading />;
@@ -100,10 +110,10 @@ export default function SingleProductPage({
           </h1>
           <p className="text-gray-400 mt-1">{t("model_name")}</p>
           <p className="text-3xl font-bold text-white mt-4">
-            {parseInt(product.price_uzs).toLocaleString(
+            {valute === 'UZS' ? parseInt(product.price_uzs).toLocaleString(
               lng === "uz" ? "uz-UZ" : "ru-RU"
-            )}{" "}
-            {t("sum")}
+            ) : product.price_usd}{" "}
+            {valute === 'UZS' ? t("sum") : "$"}
           </p>
           <p className="mt-4 text-gray-300 leading-relaxed max-w-xl">
             {lng === "uz" ? product.description_uz : product.description_ru}
@@ -125,25 +135,22 @@ export default function SingleProductPage({
       <div className="mt-16">
         <h2 className="text-2xl font-semibold mb-6">{t("related_products")}</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[1, 2, 3, 4].map((_, i) => (
+          {products.map((item, i) => (
             <div
               key={i}
               className="bg-[#1a1a1a] p-4 rounded-xl text-center hover:shadow-lg transition"
             >
               <div className="relative w-full h-40 mb-4">
                 <Image
-                  src={product.image}
+                  src={item.image}
                   alt={t("similar_product")}
                   fill
                   className="object-contain"
                 />
               </div>
-              <p className="text-white font-semibold">{t("product_title")}</p>
+              <p className="text-white font-semibold">{item.name_ru}</p>
               <p className="text-pink-500 font-bold">
-                {parseInt("4500000").toLocaleString(
-                  lng === "uz" ? "uz-UZ" : "ru-RU"
-                )}{" "}
-                {t("sum")}
+               {valute === 'UZS' ?item.price_uzs : item.price_usd} {valute === 'UZS' ? t("sum") : "$"}
               </p>
             </div>
           ))}
