@@ -11,7 +11,7 @@ interface CategoryItem {
 const Categories = ({ item, lng }: { item: CategoryItem; lng: string }) => {
   return (
     <Link
-      href={`/category/${item.name_uz}`}
+      href={`/category/${item.id}`}
       className="mt-16 flex flex-col justify-between"
     >
       <Image

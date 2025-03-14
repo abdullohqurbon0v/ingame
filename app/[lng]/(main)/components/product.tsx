@@ -19,6 +19,7 @@ interface NewsTypes {
     price_usd: string;
     price_uzs: string;
     slug: string;
+    videocard: string,
     type: string;
   };
   lng: string;
@@ -96,9 +97,9 @@ const Product = ({ item, lng }: NewsTypes) => {
         <div className="mt-auto flex items-center justify-between pt-4">
           <Link
             href={
-              item.type === "desktop"
-                ? `/desktops/${item.id}`
-                : `/products/${item.slug}`
+              item.videocard 
+                ? `/${lng}/desktops/${item.id}`
+                : `/${lng}/products/${item.slug}`
             }
           >
             <motion.button

@@ -30,7 +30,7 @@ const BrandsPage = () => {
         <div className="border-b-2 border-[#D3176D] w-40 mx-auto"></div>
         <div className="flex space-x-10">
           <Image
-            className="w-1/3 pk"
+            className="w-1/3"
             src={
               "https://a.storyblok.com/f/99519/1920x1080/55b0da46bb/5-positive-conflict-tips-you-can-learn-from-high-performance-teams-5.jpg"
             }
