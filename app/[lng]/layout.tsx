@@ -4,6 +4,7 @@ import "./globals.css";
 import { ChildProps } from "@/types";
 import { languages } from "@/i18n/settings";
 import { dir } from "i18next";
+import { Toaster } from "sonner";
 
 const orbitron = Orbitron({
   variable: "--font-orbitron",
@@ -18,7 +19,7 @@ export async function generateStaticParams() {
 export const metadata: Metadata = {
   title: "Outgame.uz | Home",
   description: "The site for booking tech products",
-  icons: "/logoo.png"
+  icons: "/logoo.png",
 };
 
 interface Props extends ChildProps {
@@ -30,6 +31,7 @@ export default function RootLayout({ children, params: { lng } }: Props) {
     <html lang={lng} dir={dir(lng)}>
       <body className={`${orbitron.variable} antialiased dark`}>
         {children}
+        <Toaster />
       </body>
     </html>
   );

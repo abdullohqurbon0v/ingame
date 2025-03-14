@@ -18,7 +18,7 @@ const SingleProductPage = ({ id, lng }: SingleProductPageProps) => {
   const { t } = useTranslation(lng);
   const [desktops, setDesktops] = useState<DesktopType[]>([]);
   const [product, setProduct] = useState<DesktopType>();
-  const [valute, setValute] = useState('')
+  const [valute, setValute] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,13 +29,26 @@ const SingleProductPage = ({ id, lng }: SingleProductPageProps) => {
         const desktopsRes = await $axios.get("/desktops");
         setDesktops(desktopsRes.data);
       } catch (err) {
-        console.error(t("error_loading_data"), err); 
+        console.error(t("error_loading_data"), err);
       }
     };
-    const valute = localStorage.getItem('valute')
-    setValute(valute as string)
     fetchData();
   }, [id, t]);
+
+  useEffect(() => {
+    const storedValute = localStorage.getItem("valute") || "UZS";
+    setValute(storedValute);
+    const handleStorageChange = () => {
+      const newValute = localStorage.getItem("valute") || "UZS";
+      setValute(newValute);
+    };
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("valuteChange", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("valuteChange", handleStorageChange);
+    };
+  }, []);
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -84,7 +97,8 @@ const SingleProductPage = ({ id, lng }: SingleProductPageProps) => {
               {lng === "uz" ? product.description_uz : product.description_ru}
             </p>
             <p className="text-xl font-bold">
-              {valute === 'UZS' ? product.price_uzs: product.price_usd} {valute === 'UZS' ? t("sum") : "$"}
+              {valute === "UZS" ? product.price_uzs : product.price_usd}{" "}
+              {valute === "UZS" ? t("sum") : "$"}
             </p>
 
             <div className="flex space-x-5">

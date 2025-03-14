@@ -35,7 +35,7 @@ import { ProductsAccordion } from "./mobile-accordions";
 import { useTranslation } from "@/i18n/client";
 
 const Navbar = ({ lng }: { lng: string }) => {
-  const [valute, setValute] = useState('')
+  const [valute, setValute] = useState<string>("");
   const { t } = useTranslation(lng);
   const [search, setSearch] = useState("");
   const router = useRouter();
@@ -49,15 +49,34 @@ const Navbar = ({ lng }: { lng: string }) => {
   };
 
   useEffect(() => {
-    const valute = localStorage.getItem('valute')
-    setValute(valute as string)
-  }, [])
+    // Устанавливаем начальное значение из localStorage
+    const storedValute = localStorage.getItem("valute") || "UZS";
+    setValute(storedValute);
+
+    // Функция для обработки изменений localStorage
+    const handleStorageChange = () => {
+      const newValute = localStorage.getItem("valute") || "UZS";
+      setValute(newValute);
+    };
+
+    // Слушаем событие 'storage' для изменений из других вкладок
+    window.addEventListener("storage", handleStorageChange);
+    // Слушаем кастомное событие для текущей вкладки
+    window.addEventListener("valuteChange", handleStorageChange);
+
+    // Очистка слушателей
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("valuteChange", handleStorageChange);
+    };
+  }, []);
 
   const handleValueChange = (value: string) => {
-    localStorage.setItem('valute', value);
+    localStorage.setItem("valute", value);
     setValute(value);
+    // Уведомляем другие компоненты об изменении валюты
+    window.dispatchEvent(new Event("valuteChange"));
   };
-  
 
   const onSearchProducts = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -299,7 +318,7 @@ const Navbar = ({ lng }: { lng: string }) => {
                 </Select>
 
                 <div className="text-sm text-muted-foreground mt-4">Валюта</div>
-                <Select>
+                <Select value={valute} onValueChange={handleValueChange}>
                   <SelectTrigger className="w-full bg-[#2a2a2a] border-none text-white">
                     <SelectValue placeholder="UZS" />
                   </SelectTrigger>

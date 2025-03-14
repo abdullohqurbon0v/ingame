@@ -4,7 +4,7 @@ import Image from "next/image";
 import { $axios } from "@/http/api";
 import { useEffect, useState } from "react";
 import Loading from "./loading";
-import { useTranslation } from "@/i18n/client"; // Предполагаем использование этой библиотеки
+import { useTranslation } from "@/i18n/client";
 
 export interface ProductsType {
   description_ru: string;
@@ -26,10 +26,10 @@ export default function SingleProductPage({
   lng: string;
 }) {
   const { t } = useTranslation(lng);
-  const [products, setProducts] = useState<ProductsType[]>([])
+  const [products, setProducts] = useState<ProductsType[]>([]);
   const [product, setProduct] = useState<ProductsType | null>(null);
   const [loading, setLoading] = useState(false);
-  const [valute, setValute] = useState('')
+  const [valute, setValute] = useState("");
 
   useEffect(() => {
     const getProduct = async () => {
@@ -37,9 +37,11 @@ export default function SingleProductPage({
       try {
         const res = await $axios.get(`/product/${id}`);
         setProduct(res.data);
-        const products = await $axios.get(`/combined?catalog_id=${res.data.catalog.id}`)
-        setProducts([...products.data.desktops, ...products.data.products])
-        console.log(products)
+        const products = await $axios.get(
+          `/combined?catalog_id=${res.data.catalog.id}`
+        );
+        setProducts([...products.data.desktops, ...products.data.products]);
+        console.log(products);
       } catch (err) {
         console.error(t("error_loading_product"), err);
       } finally {
@@ -48,6 +50,21 @@ export default function SingleProductPage({
     };
     getProduct();
   }, [id, t]);
+
+  useEffect(() => {
+    const storedValute = localStorage.getItem("valute") || "UZS";
+    setValute(storedValute);
+    const handleStorageChange = () => {
+      const newValute = localStorage.getItem("valute") || "UZS";
+      setValute(newValute);
+    };
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("valuteChange", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("valuteChange", handleStorageChange);
+    };
+  }, []);
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -72,12 +89,6 @@ export default function SingleProductPage({
 
     alert(t("added_to_cart"));
   };
-
-  useEffect(() => {
-    const valute = localStorage.getItem('valute')
-    setValute(valute as string)
-  }, [])
-
 
   if (loading) {
     return <Loading />;
@@ -110,10 +121,12 @@ export default function SingleProductPage({
           </h1>
           <p className="text-gray-400 mt-1">{t("model_name")}</p>
           <p className="text-3xl font-bold text-white mt-4">
-            {valute === 'UZS' ? parseInt(product.price_uzs).toLocaleString(
-              lng === "uz" ? "uz-UZ" : "ru-RU"
-            ) : product.price_usd}{" "}
-            {valute === 'UZS' ? t("sum") : "$"}
+            {valute === "UZS"
+              ? parseInt(product.price_uzs).toLocaleString(
+                  lng === "uz" ? "uz-UZ" : "ru-RU"
+                )
+              : product.price_usd}{" "}
+            {valute === "UZS" ? t("sum") : "$"}
           </p>
           <p className="mt-4 text-gray-300 leading-relaxed max-w-xl">
             {lng === "uz" ? product.description_uz : product.description_ru}
@@ -122,7 +135,10 @@ export default function SingleProductPage({
             <button className="bg-pink-500 hover:bg-pink-600 px-6 py-3 rounded-lg font-bold transition">
               {t("buy")}
             </button>
-            <button className="border border-pink-500 px-6 py-3 rounded-lg text-white hover:bg-pink-600 transition" onClick={handleAddToCart}>
+            <button
+              className="border border-pink-500 px-6 py-3 rounded-lg text-white hover:bg-pink-600 transition"
+              onClick={handleAddToCart}
+            >
               {t("add_to_cart")}
             </button>
           </div>
@@ -150,7 +166,8 @@ export default function SingleProductPage({
               </div>
               <p className="text-white font-semibold">{item.name_ru}</p>
               <p className="text-pink-500 font-bold">
-               {valute === 'UZS' ?item.price_uzs : item.price_usd} {valute === 'UZS' ? t("sum") : "$"}
+                {valute === "UZS" ? item.price_uzs : item.price_usd}{" "}
+                {valute === "UZS" ? t("sum") : "$"}
               </p>
             </div>
           ))}

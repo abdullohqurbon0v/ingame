@@ -39,34 +39,44 @@ interface ComputersTypes {
 
 const Computers = ({ item, lng }: ComputersTypes) => {
   const { t } = useTranslation(lng);
-  const [valute, setValute] = useState('')
+  const [valute, setValute] = useState("");
 
-   const handleAddToCard = (item: DesktopType) => {
-        if (!item) return;
-        const existingCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
-        const newItem = {
-          image: item.image,
-          title: lng === "uz" ? item.name_uz : item.name_ru,
-          details:
-            (lng === "uz" ? item.description_uz : item.description_ru).slice(
-              0,
-              50
-            ) + "...",
-          availability: t("in_stock"),
-          quantity: 1,
-          price: item.price_uzs.toString(),
-        };
-    
-        const updatedCart = [...existingCart, newItem];
-        localStorage.setItem("cartItems", JSON.stringify(updatedCart));
-    
-        alert(t("added_to_cart"));
-      };
+  const handleAddToCard = (item: DesktopType) => {
+    if (!item) return;
+    const existingCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
+    const newItem = {
+      image: item.image,
+      title: lng === "uz" ? item.name_uz : item.name_ru,
+      details:
+        (lng === "uz" ? item.description_uz : item.description_ru).slice(
+          0,
+          50
+        ) + "...",
+      availability: t("in_stock"),
+      quantity: 1,
+      price: item.price_uzs.toString(),
+    };
 
-      useEffect(() => {
-        const valute = localStorage.getItem('valute')
-        setValute(valute as string)
-      }, [])
+    const updatedCart = [...existingCart, newItem];
+    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+
+    alert(t("added_to_cart"));
+  };
+
+  useEffect(() => {
+    const storedValute = localStorage.getItem("valute") || "UZS";
+    setValute(storedValute);
+    const handleStorageChange = () => {
+      const newValute = localStorage.getItem("valute") || "UZS";
+      setValute(newValute);
+    };
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("valuteChange", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("valuteChange", handleStorageChange);
+    };
+  }, []);
 
   return (
     <div className="bg-[#1E1E1E] p-6 flex flex-col space-y-6 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-1">
@@ -83,7 +93,8 @@ const Computers = ({ item, lng }: ComputersTypes) => {
         </span>
         <div className="flex flex-col items-end">
           <button className="px-3 py-1.5 border border-[#D3176D] text-white text-sm rounded-md hover:bg-[#D3176D]/10 transition-colors">
-            {valute === 'UZS' ? item.price_uzs : item.price_usd} {valute === 'USD' ? '$' : lng == "uz" ? "Sum" : "Сум"}
+            {valute === "UZS" ? item.price_uzs : item.price_usd}{" "}
+            {valute === "USD" ? "$" : lng == "uz" ? "Sum" : "Сум"}
           </button>
         </div>
       </div>

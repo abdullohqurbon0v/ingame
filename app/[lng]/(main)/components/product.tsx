@@ -8,6 +8,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ProductsType } from "@/types";
+import { toast } from "sonner";
 
 interface NewsTypes {
   item: {
@@ -27,35 +28,42 @@ interface NewsTypes {
 }
 
 const Product = ({ item, lng }: NewsTypes) => {
-  const [valute, setValute] = useState<string>('UZS');
+  const [valute, setValute] = useState<string>("UZS");
   const { t } = useTranslation(lng);
   const [isHovered, setIsHovered] = useState(false);
 
-  const formatPrice = (price: string) =>
-    new Intl.NumberFormat("uz-UZ", {
+  const formatPrice = (price: string, currency: string) =>
+    new Intl.NumberFormat(currency === "UZS" ? "uz-UZ" : "en-US", {
       style: "currency",
-      currency: "UZS",
+      currency: currency,
     }).format(Number(price));
 
   const handleAddToCard = (item: ProductsType) => {
     if (!item) return;
-
+    toast(lng == "uz" ? "Savatga qoshildi" : "Добавлено в карзину", {
+      description: lng == "uz" ? item.name_uz : item.name_ru,
+      action: {
+        label: lng == "uz" ? "Yopish" : "Закрыть",
+        onClick: () => console.log("Undo"),
+      },
+    });
     const existingCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
 
     const newItem = {
       image: item.image,
       title: lng === "uz" ? item.name_uz : item.name_ru,
       details:
-        (lng === "uz" ? item.description_uz : item.description_ru).slice(0, 50) + "...",
+        (lng === "uz" ? item.description_uz : item.description_ru).slice(
+          0,
+          50
+        ) + "...",
       availability: t("in_stock"),
       quantity: 1,
-      price: item.price_uzs.toString(),
+      price: valute === "UZS" ? item.price_uzs : item.price_usd,
     };
 
     const updatedCart = [...existingCart, newItem];
     localStorage.setItem("cartItems", JSON.stringify(updatedCart));
-
-    alert(t("added_to_cart"));
   };
 
   const cardVariants = {
@@ -66,19 +74,22 @@ const Product = ({ item, lng }: NewsTypes) => {
       transition: { duration: 0.2 },
     },
   };
+
   useEffect(() => {
-    const storedValute = localStorage.getItem('valute') || 'UZS';
+    const storedValute = localStorage.getItem("valute") || "UZS";
     setValute(storedValute);
-  }, []);
-  useEffect(() => {
+
     const handleStorageChange = () => {
-      const storedValute = localStorage.getItem('valute') || 'UZS';
-      setValute(storedValute);
+      const newValute = localStorage.getItem("valute") || "UZS";
+      setValute(newValute);
     };
 
     window.addEventListener("storage", handleStorageChange);
+
+    window.addEventListener("valuteChange", handleStorageChange);
     return () => {
       window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("valuteChange", handleStorageChange);
     };
   }, []);
 
@@ -124,7 +135,9 @@ const Product = ({ item, lng }: NewsTypes) => {
 
         <div className="space-y-3">
           <p className="text-[#D3176D] text-xl font-bold tracking-tight sm:text-lg">
-            {valute === 'UZS' ? formatPrice(item.price_uzs) : formatPrice(item.price_usd)}
+            {valute === "UZS"
+              ? formatPrice(item.price_uzs, "UZS")
+              : formatPrice(item.price_usd, "USD")}
           </p>
           <p className="text-gray-400 text-sm line-clamp-2 leading-relaxed sm:text-xs">
             {lng === "uz" ? item.description_uz : item.description_ru}
@@ -158,7 +171,10 @@ const Product = ({ item, lng }: NewsTypes) => {
                       rounded-full transition-all duration-200"
             asChild
           >
-            <motion.div whileTap={{ scale: 0.9 }} onClick={() => handleAddToCard(item)}>
+            <motion.div
+              whileTap={{ scale: 0.9 }}
+              onClick={() => handleAddToCard(item)}
+            >
               <ShoppingCart
                 className="h-5 w-5 group-hover:rotate-12
                                      transition-transform duration-200"
