@@ -4,6 +4,7 @@ import { Cctv, Cpu, MemoryStick, Thermometer } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface CategoryType {
   description_ru: string;
@@ -42,6 +43,13 @@ const Computers = ({ item, lng }: ComputersTypes) => {
   const [valute, setValute] = useState("");
 
   const handleAddToCard = (item: DesktopType) => {
+    toast(lng == "uz" ? "Savatga qoshildi" : "Добавлено в карзину", {
+      description: lng == "uz" ? item.name_uz : item.name_ru,
+      action: {
+        label: lng == "uz" ? "Yopish" : "Закрыть",
+        onClick: () => console.log("Undo"),
+      },
+    });
     if (!item) return;
     const existingCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
     const newItem = {
@@ -54,13 +62,12 @@ const Computers = ({ item, lng }: ComputersTypes) => {
         ) + "...",
       availability: t("in_stock"),
       quantity: 1,
-      price: item.price_uzs.toString(),
+      price_usd: item.price_usd,
+      price_uzs: item.price_uzs,
     };
 
     const updatedCart = [...existingCart, newItem];
     localStorage.setItem("cartItems", JSON.stringify(updatedCart));
-
-    alert(t("added_to_cart"));
   };
 
   useEffect(() => {

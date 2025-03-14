@@ -5,6 +5,7 @@ import { $axios } from "@/http/api";
 import { useEffect, useState } from "react";
 import Loading from "./loading";
 import { useTranslation } from "@/i18n/client";
+import { toast } from "sonner";
 
 export interface ProductsType {
   description_ru: string;
@@ -68,6 +69,13 @@ export default function SingleProductPage({
 
   const handleAddToCart = () => {
     if (!product) return;
+    toast(lng == "uz" ? "Savatga qoshildi" : "Добавлено в карзину", {
+      description: lng == "uz" ? product.name_uz : product.name_ru,
+      action: {
+        label: lng == "uz" ? "Yopish" : "Закрыть",
+        onClick: () => console.log("Undo"),
+      },
+    });
 
     const existingCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
 
@@ -81,13 +89,12 @@ export default function SingleProductPage({
         ) + "...",
       availability: t("in_stock"),
       quantity: 1,
-      price: product.price_uzs.toString(),
+      price_usd: product.price_usd,
+      price_uzs: product.price_uzs,
     };
 
     const updatedCart = [...existingCart, newItem];
     localStorage.setItem("cartItems", JSON.stringify(updatedCart));
-
-    alert(t("added_to_cart"));
   };
 
   if (loading) {

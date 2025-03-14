@@ -5,9 +5,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useParams } from "next/navigation";
 import { $axios } from "@/http/api";
 import Product from "../../components/product";
+import Loading from "../../components/loading";
+
+interface Brand {
+  name: string;
+  id: string;
+}
 
 interface ProductsType {
   type: string;
+  brand: Brand;
   description_ru: string;
   description_uz: string;
   image: string;
@@ -18,6 +25,7 @@ interface ProductsType {
   price_uzs: string;
   videocard: string;
   slug: string;
+  monitor?: number; // Добавлено для фильтрации по монитору (если есть в данных)
 }
 
 interface BrandsType {
@@ -38,6 +46,7 @@ const Category = () => {
   const [filteredProducts, setFilteredProducts] = useState<ProductsType[]>([]);
   const [brands, setBrands] = useState<BrandsType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [valute, setValute] = useState<string>("UZS");
   const [filters, setFilters] = useState<FilterState>({
     minPrice: null,
     maxPrice: null,
@@ -48,8 +57,6 @@ const Category = () => {
 
   const { lng, name } = useParams<{ name: string; lng: string }>();
   const monitors = ["24", "27", "32"];
-  const mouses = ["Игровая", "Офисная"];
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -69,25 +76,65 @@ const Category = () => {
     };
     fetchData();
   }, [name]);
+  useEffect(() => {
+    const storedValute = localStorage.getItem("valute") || "UZS";
+    setValute(storedValute);
 
+    const handleStorageChange = () => {
+      const newValute = localStorage.getItem("valute") || "UZS";
+      setValute(newValute);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("valuteChange", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("valuteChange", handleStorageChange);
+    };
+  }, []);
   useEffect(() => {
     const applyFilters = () => {
       let result = [...products];
-      if (filters.minPrice !== null) {
-        result = result.filter((p) => Number(p.price_uzs) >= Number(filters.minPrice));
-      }
-      if (filters.maxPrice !== null) {
-        result = result.filter((p) => Number(p.price_uzs) <= Number(filters.maxPrice));
+      if (filters.minPrice !== null || filters.maxPrice !== null) {
+        result = result.filter((p) => {
+          const price =
+            valute === "UZS" ? Number(p.price_uzs) : Number(p.price_usd);
+          const minCheck =
+            filters.minPrice !== null ? price >= filters.minPrice : true;
+          const maxCheck =
+            filters.maxPrice !== null ? price <= filters.maxPrice : true;
+          return minCheck && maxCheck;
+        });
       }
       if (filters.selectedBrands.length > 0) {
-        result = result.filter((p) => filters.selectedBrands.includes(p.type));
+        console.log("REsult", result);
+        result = result.filter((p) =>
+          filters.selectedBrands.includes(p?.brand?.name)
+        );
+      }
+      if (filters.selectedMonitors.length > 0) {
+        result = result.filter((p) =>
+          p.monitor
+            ? filters.selectedMonitors.includes(p.monitor.toString())
+            : false
+        );
+      }
+
+      // Фильтрация по мышкам (предполагаем, что это часть типа или нужно добавить поле)
+      if (filters.selectedMouses.length > 0) {
+        result = result.filter((p) =>
+          filters.selectedMouses.some(
+            (mouse) => p.name_uz.includes(mouse) || p.name_ru.includes(mouse)
+          )
+        );
       }
 
       setFilteredProducts(result);
     };
 
     applyFilters();
-  }, [filters, products]);
+  }, [filters, products, valute]);
 
   const handleFilterChange = (type: keyof FilterState, value: string) => {
     setFilters((prev) => {
@@ -110,86 +157,85 @@ const Category = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen text-white">
-        Loading...
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
-    <div className="bg-[#1A1A1A] min-h-screen">
-      <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row space-x-10 pt-40 text-white">
-        <aside className="w-full md:w-1/3 mt-10 md:mt-0 md:space-y-5">
-          <div className="space-y-5">
-            <p className="text-lg">Цена</p>
-            <form className="flex flex-col sm:flex-row space-x-0 sm:space-x-5">
+    <div className="bg-[#1A1A1A] min-h-screen py-20">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-0 flex flex-col md:flex-row gap-8 pt-20 text-white">
+        <aside className="w-full md:w-1/4 bg-[#222222] p-6 rounded-xl shadow-lg">
+          <h2 className="text-xl font-semibold text-[#D3176D] mb-6">Фильтры</h2>
+
+          {/* Цена */}
+          <div className="space-y-4">
+            <p className="text-lg font-medium text-gray-200">Цена ({valute})</p>
+            <div className="flex flex-col sm:flex-row gap-4">
               <Input
                 type="number"
                 placeholder="От"
                 onChange={(e) => handleFilterChange("minPrice", e.target.value)}
-                className="w-full md:w-auto"
+                className="bg-[#2A2A2A] border-none text-white placeholder-gray-500 focus:ring-2 focus:ring-[#D3176D] rounded-lg"
               />
               <Input
                 type="number"
                 placeholder="До"
                 onChange={(e) => handleFilterChange("maxPrice", e.target.value)}
-                className="w-full md:w-auto"
+                className="bg-[#2A2A2A] border-none text-white placeholder-gray-500 focus:ring-2 focus:ring-[#D3176D] rounded-lg"
               />
-            </form>
-            <div className="border-b"></div>
+            </div>
+            <div className="border-t border-gray-700 mt-4"></div>
           </div>
 
-          <div className="my-8">
-            <p className="text-lg">Бренды</p>
+          {/* Бренды */}
+          <div className="mt-6 space-y-4">
+            <p className="text-lg font-medium text-gray-200">Бренды</p>
             {brands.map((item) => (
-              <div key={item.id} className="flex space-x-4 items-center mt-2">
+              <div key={item.id} className="flex items-center gap-3">
                 <Checkbox
-                  className="border-white"
+                  className="border-gray-500 data-[state=checked]:bg-[#D3176D] data-[state=checked]:border-[#D3176D]"
                   checked={filters.selectedBrands.includes(item.name)}
-                  onCheckedChange={() => handleFilterChange("selectedBrands", item.name)}
+                  onCheckedChange={() =>
+                    handleFilterChange("selectedBrands", item.name)
+                  }
                 />
-                <p>{item.name}</p>
+                <p className="text-gray-300 hover:text-white transition-colors">
+                  {item.name}
+                </p>
               </div>
             ))}
+            <div className="border-t border-gray-700 mt-4"></div>
           </div>
 
-          <div className="my-8">
-            <p className="text-lg">Монитор</p>
+          {/* Монитор */}
+          <div className="mt-6 space-y-4">
+            <p className="text-lg font-medium text-gray-200">Монитор</p>
             {monitors.map((item) => (
-              <div key={item} className="flex space-x-4 items-center mt-2">
+              <div key={item} className="flex items-center gap-3">
                 <Checkbox
-                  className="border-white"
+                  className="border-gray-500 data-[state=checked]:bg-[#D3176D] data-[state=checked]:border-[#D3176D]"
                   checked={filters.selectedMonitors.includes(item)}
-                  onCheckedChange={() => handleFilterChange("selectedMonitors", item)}
+                  onCheckedChange={() =>
+                    handleFilterChange("selectedMonitors", item)
+                  }
                 />
-                <p>{item}</p>
+                <p className="text-gray-300 hover:text-white transition-colors">
+                  {item}
+                </p>
               </div>
             ))}
-          </div>
-
-          <div className="my-8">
-            <p className="text-lg">Мышка</p>
-            {mouses.map((item) => (
-              <div key={item} className="flex space-x-4 items-center mt-2">
-                <Checkbox
-                  className="border-white"
-                  checked={filters.selectedMouses.includes(item)}
-                  onCheckedChange={() => handleFilterChange("selectedMouses", item)}
-                />
-                <p>{item}</p>
-              </div>
-            ))}
+            <div className="border-t border-gray-700 mt-4"></div>
           </div>
         </aside>
-        <div className="flex-1 mt-10 md:mt-0">
-          <h1 className="text-3xl font-semibold mb-7">Игровые ПК</h1>
+        <div className="flex-1">
+          <h1 className="text-3xl font-bold text-white mb-8">Игровые ПК</h1>
           {filteredProducts.length === 0 ? (
-            <p className="text-gray-400">Товаров не найдено</p>
+            <p className="text-gray-400 text-lg text-center">
+              Товаров не найдено
+            </p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 pr-5 mb-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((item) => (
-                <Product item={item} key={item.name_uz} lng={lng} />
+                <Product item={item} key={item.id} lng={lng} />
               ))}
             </div>
           )}

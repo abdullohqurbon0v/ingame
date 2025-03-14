@@ -11,7 +11,8 @@ type CartItemType = {
   details: string;
   availability: string;
   quantity: number;
-  price: string;
+  price_uzs: string;
+  price_usd: string;
 };
 
 type CartItemProps = {
@@ -27,6 +28,31 @@ const CartItem: React.FC<CartItemProps> = ({
   onDecrease,
   onRemove,
 }) => {
+  const [valute, setValute] = useState<string>("UZS");
+
+  useEffect(() => {
+    const storedValute = localStorage.getItem("valute") || "UZS";
+    setValute(storedValute);
+    const handleStorageChange = () => {
+      const newValute = localStorage.getItem("valute") || "UZS";
+      setValute(newValute);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("valuteChange", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("valuteChange", handleStorageChange);
+    };
+  }, []);
+
+  const formatPrice = (price: string, currency: string) =>
+    new Intl.NumberFormat(currency === "UZS" ? "uz-UZ" : "en-US", {
+      style: "currency",
+      currency: currency,
+    }).format(Number(price));
+
   return (
     <div className="flex flex-wrap sm:flex-nowrap justify-between gap-4 bg-[#1a1a1a] p-5 rounded-xl mb-5 shadow-md hover:shadow-pink-500/10 transition-shadow">
       <div className="flex items-center gap-5 flex-1 min-w-[200px]">
@@ -64,7 +90,9 @@ const CartItem: React.FC<CartItemProps> = ({
 
       <div className="flex items-center justify-between sm:justify-end gap-6 sm:gap-4 w-full sm:w-auto">
         <p className="text-white font-semibold whitespace-nowrap">
-          {item.price} сум/мес
+          {valute === "UZS"
+            ? formatPrice(item.price_uzs, valute)
+            : formatPrice(item.price_usd, valute)}
         </p>
         <button onClick={onRemove} className="text-red-500 hover:text-red-400">
           <Trash size={20} />
@@ -76,8 +104,14 @@ const CartItem: React.FC<CartItemProps> = ({
 
 const CartPage: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+  const [valute, setValute] = useState<string>("UZS");
 
   useEffect(() => {
+    // Устанавливаем начальное значение валюты из localStorage
+    const storedValute = localStorage.getItem("valute") || "UZS";
+    setValute(storedValute);
+
+    // Загружаем корзину из localStorage
     const storedCart = localStorage.getItem("cartItems");
     if (storedCart) {
       try {
@@ -87,12 +121,27 @@ const CartPage: React.FC = () => {
         console.error("Ошибка при парсинге корзины:", e);
       }
     }
+
+    // Функция для обработки изменений валюты
+    const handleStorageChange = () => {
+      const newValute = localStorage.getItem("valute") || "UZS";
+      setValute(newValute);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("valuteChange", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("valuteChange", handleStorageChange);
+    };
   }, []);
 
   const increaseQuantity = (index: number) => {
     const updated = [...cartItems];
     updated[index].quantity += 1;
     setCartItems(updated);
+    localStorage.setItem("cartItems", JSON.stringify(updated));
   };
 
   const decreaseQuantity = (index: number) => {
@@ -100,6 +149,7 @@ const CartPage: React.FC = () => {
     if (updated[index].quantity > 1) {
       updated[index].quantity -= 1;
       setCartItems(updated);
+      localStorage.setItem("cartItems", JSON.stringify(updated));
     }
   };
 
@@ -111,12 +161,16 @@ const CartPage: React.FC = () => {
   };
 
   const total = cartItems.reduce((acc, item) => {
-    const priceNum = parseInt(item.price?.replace(/\s/g, "") || "0");
+    const priceNum =
+      parseFloat(valute === "UZS" ? item.price_uzs : item.price_usd) || 0;
     return acc + priceNum * item.quantity;
   }, 0);
 
-  const formatPrice = (price: number) =>
-    price.toLocaleString("ru-RU").replace(/,/g, " ");
+  const formatPrice = (price: number, currency: string) =>
+    new Intl.NumberFormat(currency === "UZS" ? "uz-UZ" : "en-US", {
+      style: "currency",
+      currency: currency,
+    }).format(price);
 
   return (
     <div className="max-w-[1200px] mx-auto px-4 mt-16 pt-10">
@@ -153,7 +207,7 @@ const CartPage: React.FC = () => {
               <p className="text-2xl font-semibold">
                 Итого:{" "}
                 <span className="text-pink-500 font-bold">
-                  {formatPrice(total)} сум
+                  {formatPrice(total, valute)}
                 </span>
               </p>
               <Link href={"/registration"}>

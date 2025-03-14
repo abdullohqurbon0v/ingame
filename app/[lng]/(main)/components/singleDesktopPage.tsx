@@ -8,6 +8,7 @@ import Link from "next/link";
 import Loading from "./loading";
 import { useTranslation } from "@/i18n/client";
 import Accordions from "./accordions";
+import { toast } from "sonner";
 
 type SingleProductPageProps = {
   id: string;
@@ -52,6 +53,13 @@ const SingleProductPage = ({ id, lng }: SingleProductPageProps) => {
 
   const handleAddToCart = () => {
     if (!product) return;
+    toast(lng == "uz" ? "Savatga qoshildi" : "Добавлено в карзину", {
+      description: lng == "uz" ? product.name_uz : product.name_ru,
+      action: {
+        label: lng == "uz" ? "Yopish" : "Закрыть",
+        onClick: () => console.log("Undo"),
+      },
+    });
 
     const existingCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
 
@@ -65,13 +73,12 @@ const SingleProductPage = ({ id, lng }: SingleProductPageProps) => {
         ) + "...",
       availability: t("in_stock"),
       quantity: 1,
-      price: product.price_uzs.toString(),
+      price_usd: product.price_usd,
+      price_uzs: product.price_uzs,
     };
 
     const updatedCart = [...existingCart, newItem];
     localStorage.setItem("cartItems", JSON.stringify(updatedCart));
-
-    alert(t("added_to_cart"));
   };
 
   if (!product) {
@@ -102,9 +109,11 @@ const SingleProductPage = ({ id, lng }: SingleProductPageProps) => {
             </p>
 
             <div className="flex space-x-5">
-              <button className="bg-[#D3176D] border border-[#D3176D] px-5 py-1 text-sm">
-                {t("buy")}
-              </button>
+              <Link href={"/card"}>
+                <button className="bg-[#D3176D] border border-[#D3176D] px-5 py-1 text-sm">
+                  {t("buy")}
+                </button>
+              </Link>
               <button
                 onClick={handleAddToCart}
                 className="border border-[#D3176D] px-5 py-1 text-sm hover:bg-[#D3176D] transition"
