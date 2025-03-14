@@ -16,7 +16,7 @@ interface ProductsType {
   name_ru: string;
   price_usd: string;
   price_uzs: string;
-  videocard: string,
+  videocard: string;
   slug: string;
 }
 
@@ -45,8 +45,8 @@ const Category = () => {
     selectedMonitors: [],
     selectedMouses: [],
   });
-  
-  const { lng, name } = useParams<{name: string, lng: string}>();
+
+  const { lng, name } = useParams<{ name: string; lng: string }>();
   const monitors = ["24", "27", "32"];
   const mouses = ["Игровая", "Офисная"];
 
@@ -55,15 +55,14 @@ const Category = () => {
       try {
         setLoading(true);
         const res = await $axios.get(`/combined/?catalog_id=${name}`);
-        console.log(res)
         const allProducts = [...res.data.products, ...res.data.desktops];
         setProducts(allProducts);
         setFilteredProducts(allProducts);
 
-        const brandsRes = await $axios.get('/brands');
+        const brandsRes = await $axios.get("/brands");
         setBrands(brandsRes.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
@@ -75,19 +74,13 @@ const Category = () => {
     const applyFilters = () => {
       let result = [...products];
       if (filters.minPrice !== null) {
-        result = result.filter(p => 
-          Number(p.price_uzs) >= Number(filters.minPrice)
-        );
+        result = result.filter((p) => Number(p.price_uzs) >= Number(filters.minPrice));
       }
       if (filters.maxPrice !== null) {
-        result = result.filter(p => 
-          Number(p.price_uzs) <= Number(filters.maxPrice)
-        );
+        result = result.filter((p) => Number(p.price_uzs) <= Number(filters.maxPrice));
       }
       if (filters.selectedBrands.length > 0) {
-        result = result.filter(p => 
-          filters.selectedBrands.includes(p.type)
-        );
+        result = result.filter((p) => filters.selectedBrands.includes(p.type));
       }
 
       setFilteredProducts(result);
@@ -96,22 +89,22 @@ const Category = () => {
     applyFilters();
   }, [filters, products]);
 
-  const handleFilterChange = (type: keyof FilterState, value: any) => {
-    setFilters(prev => {
-      if (type === 'minPrice' || type === 'maxPrice') {
+  const handleFilterChange = (type: keyof FilterState, value: string) => {
+    setFilters((prev) => {
+      if (type === "minPrice" || type === "maxPrice") {
         return { ...prev, [type]: value ? Number(value) : null };
       }
-      
+
       const currentValues = prev[type] as string[];
       if (currentValues.includes(value)) {
         return {
           ...prev,
-          [type]: currentValues.filter(v => v !== value)
+          [type]: currentValues.filter((v) => v !== value),
         };
       }
       return {
         ...prev,
-        [type]: [...currentValues, value]
+        [type]: [...currentValues, value],
       };
     });
   };
@@ -126,33 +119,35 @@ const Category = () => {
 
   return (
     <div className="bg-[#1A1A1A] min-h-screen">
-      <div className="max-w-[1200px] mx-auto flex space-x-10 pt-40 text-white">
-        <aside className="w-1/3 mt-10">
+      <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row space-x-10 pt-40 text-white">
+        <aside className="w-full md:w-1/3 mt-10 md:mt-0 md:space-y-5">
           <div className="space-y-5">
-            <p>Цена</p>
-            <form className="flex space-x-5">
-              <Input 
-                type="number" 
+            <p className="text-lg">Цена</p>
+            <form className="flex flex-col sm:flex-row space-x-0 sm:space-x-5">
+              <Input
+                type="number"
                 placeholder="От"
-                onChange={(e) => handleFilterChange('minPrice', e.target.value)}
+                onChange={(e) => handleFilterChange("minPrice", e.target.value)}
+                className="w-full md:w-auto"
               />
-              <Input 
-                type="number" 
+              <Input
+                type="number"
                 placeholder="До"
-                onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
+                onChange={(e) => handleFilterChange("maxPrice", e.target.value)}
+                className="w-full md:w-auto"
               />
             </form>
             <div className="border-b"></div>
           </div>
 
           <div className="my-8">
-            <p>Бренды</p>
+            <p className="text-lg">Бренды</p>
             {brands.map((item) => (
               <div key={item.id} className="flex space-x-4 items-center mt-2">
                 <Checkbox
                   className="border-white"
                   checked={filters.selectedBrands.includes(item.name)}
-                  onCheckedChange={() => handleFilterChange('selectedBrands', item.name)}
+                  onCheckedChange={() => handleFilterChange("selectedBrands", item.name)}
                 />
                 <p>{item.name}</p>
               </div>
@@ -160,13 +155,13 @@ const Category = () => {
           </div>
 
           <div className="my-8">
-            <p>Монитор</p>
+            <p className="text-lg">Монитор</p>
             {monitors.map((item) => (
               <div key={item} className="flex space-x-4 items-center mt-2">
                 <Checkbox
                   className="border-white"
                   checked={filters.selectedMonitors.includes(item)}
-                  onCheckedChange={() => handleFilterChange('selectedMonitors', item)}
+                  onCheckedChange={() => handleFilterChange("selectedMonitors", item)}
                 />
                 <p>{item}</p>
               </div>
@@ -174,28 +169,27 @@ const Category = () => {
           </div>
 
           <div className="my-8">
-            <p>Мышка</p>
+            <p className="text-lg">Мышка</p>
             {mouses.map((item) => (
               <div key={item} className="flex space-x-4 items-center mt-2">
                 <Checkbox
                   className="border-white"
                   checked={filters.selectedMouses.includes(item)}
-                  onCheckedChange={() => handleFilterChange('selectedMouses', item)}
+                  onCheckedChange={() => handleFilterChange("selectedMouses", item)}
                 />
                 <p>{item}</p>
               </div>
             ))}
           </div>
         </aside>
-
-        <div className="flex-1">
+        <div className="flex-1 mt-10 md:mt-0">
           <h1 className="text-3xl font-semibold mb-7">Игровые ПК</h1>
           {filteredProducts.length === 0 ? (
             <p className="text-gray-400">Товаров не найдено</p>
           ) : (
-            <div className="grid grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 pr-5 mb-10">
               {filteredProducts.map((item) => (
-               <Product item={item} key={item.name_uz} lng={lng}/>
+                <Product item={item} key={item.name_uz} lng={lng} />
               ))}
             </div>
           )}

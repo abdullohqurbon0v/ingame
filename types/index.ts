@@ -59,6 +59,7 @@ export interface ProductsType {
   name_ru: string;
   price_usd: string;
   price_uzs: string;
+  videocard: string,
   slug: string;
 }
 

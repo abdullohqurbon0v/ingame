@@ -1,11 +1,10 @@
 import { useTranslation } from "@/i18n/client";
+import { DesktopType } from "@/types";
 import { Cctv, Cpu, MemoryStick, Thermometer } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-// Interfaces remain unchanged
 interface CategoryType {
   description_ru: string;
   description_uz: string;
@@ -40,10 +39,34 @@ interface ComputersTypes {
 
 const Computers = ({ item, lng }: ComputersTypes) => {
   const { t } = useTranslation(lng);
-  const router = useRouter();
-  const onNavigateProduct = (query: number) => {
-    router.push(`/category/${query}`);
-  };
+  const [valute, setValute] = useState('')
+
+   const handleAddToCard = (item: DesktopType) => {
+        if (!item) return;
+        const existingCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
+        const newItem = {
+          image: item.image,
+          title: lng === "uz" ? item.name_uz : item.name_ru,
+          details:
+            (lng === "uz" ? item.description_uz : item.description_ru).slice(
+              0,
+              50
+            ) + "...",
+          availability: t("in_stock"),
+          quantity: 1,
+          price: item.price_uzs.toString(),
+        };
+    
+        const updatedCart = [...existingCart, newItem];
+        localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+    
+        alert(t("added_to_cart"));
+      };
+
+      useEffect(() => {
+        const valute = localStorage.getItem('valute')
+        setValute(valute as string)
+      }, [])
 
   return (
     <div className="bg-[#1E1E1E] p-6 flex flex-col space-y-6 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-1">
@@ -60,7 +83,7 @@ const Computers = ({ item, lng }: ComputersTypes) => {
         </span>
         <div className="flex flex-col items-end">
           <button className="px-3 py-1.5 border border-[#D3176D] text-white text-sm rounded-md hover:bg-[#D3176D]/10 transition-colors">
-            {item.price_uzs} {lng == "uz" ? "Sum" : "Сум"}
+            {valute === 'UZS' ? item.price_uzs : item.price_usd} {valute === 'USD' ? '$' : lng == "uz" ? "Sum" : "Сум"}
           </button>
         </div>
       </div>
@@ -106,7 +129,7 @@ const Computers = ({ item, lng }: ComputersTypes) => {
         </Link>
         <button
           className="flex-1 px-4 py-2 border border-[#D3176D] text-[#D3176D] text-sm rounded-md hover:bg-[#D3176D] hover:text-white transition-all duration-200"
-          onClick={() => onNavigateProduct(item.id)}
+          onClick={() => handleAddToCard(item)}
         >
           {t("buy")}
         </button>

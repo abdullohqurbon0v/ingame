@@ -44,6 +44,31 @@ export default function SingleProductPage({
     getProduct();
   }, [id, t]);
 
+  const handleAddToCart = () => {
+    if (!product) return;
+
+    const existingCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
+
+    const newItem = {
+      image: product.image,
+      title: lng === "uz" ? product.name_uz : product.name_ru,
+      details:
+        (lng === "uz" ? product.description_uz : product.description_ru).slice(
+          0,
+          50
+        ) + "...",
+      availability: t("in_stock"),
+      quantity: 1,
+      price: product.price_uzs.toString(),
+    };
+
+    const updatedCart = [...existingCart, newItem];
+    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+
+    alert(t("added_to_cart"));
+  };
+
+
   if (loading) {
     return <Loading />;
   }
@@ -87,7 +112,7 @@ export default function SingleProductPage({
             <button className="bg-pink-500 hover:bg-pink-600 px-6 py-3 rounded-lg font-bold transition">
               {t("buy")}
             </button>
-            <button className="border border-pink-500 px-6 py-3 rounded-lg text-white hover:bg-pink-600 transition">
+            <button className="border border-pink-500 px-6 py-3 rounded-lg text-white hover:bg-pink-600 transition" onClick={handleAddToCart}>
               {t("add_to_cart")}
             </button>
           </div>

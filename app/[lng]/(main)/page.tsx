@@ -61,6 +61,8 @@ const MainPage = () => {
         setLoading(false);
       }
     }
+    const valute = localStorage.getItem('valute')
+    localStorage.setItem('valute', valute ? valute : 'UZS')
     getDatas();
   }, []);
 

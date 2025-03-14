@@ -5,8 +5,9 @@ import { useTranslation } from "@/i18n/client";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { ProductsType } from "@/types";
 
 interface NewsTypes {
   item: {
@@ -19,14 +20,14 @@ interface NewsTypes {
     price_usd: string;
     price_uzs: string;
     slug: string;
-    videocard: string,
+    videocard: string;
     type: string;
   };
   lng: string;
 }
 
 const Product = ({ item, lng }: NewsTypes) => {
-  console.log(item);
+  const [valute, setValute] = useState<string>('UZS');
   const { t } = useTranslation(lng);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -36,6 +37,27 @@ const Product = ({ item, lng }: NewsTypes) => {
       currency: "UZS",
     }).format(Number(price));
 
+  const handleAddToCard = (item: ProductsType) => {
+    if (!item) return;
+
+    const existingCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
+
+    const newItem = {
+      image: item.image,
+      title: lng === "uz" ? item.name_uz : item.name_ru,
+      details:
+        (lng === "uz" ? item.description_uz : item.description_ru).slice(0, 50) + "...",
+      availability: t("in_stock"),
+      quantity: 1,
+      price: item.price_uzs.toString(),
+    };
+
+    const updatedCart = [...existingCart, newItem];
+    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+
+    alert(t("added_to_cart"));
+  };
+
   const cardVariants = {
     initial: { y: 0, opacity: 1 },
     hover: {
@@ -44,6 +66,21 @@ const Product = ({ item, lng }: NewsTypes) => {
       transition: { duration: 0.2 },
     },
   };
+  useEffect(() => {
+    const storedValute = localStorage.getItem('valute') || 'UZS';
+    setValute(storedValute);
+  }, []);
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const storedValute = localStorage.getItem('valute') || 'UZS';
+      setValute(storedValute);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   return (
     <motion.div
@@ -54,7 +91,7 @@ const Product = ({ item, lng }: NewsTypes) => {
       onHoverEnd={() => setIsHovered(false)}
       className="bg-gradient-to-b from-[#1E1E1E] to-[#2A2A2A] rounded-xl overflow-hidden
                  border border-gray-800/50 flex flex-col
-                 max-w-sm mx-auto"
+                 max-w-sm mx-auto sm:max-w-xs md:max-w-sm lg:max-w-md"
     >
       <div className="relative p-6">
         <Image
@@ -64,7 +101,7 @@ const Product = ({ item, lng }: NewsTypes) => {
           height={200}
           className="mx-auto object-contain transition-all duration-300
                     rounded-lg w-full max-h-[200px]
-                    hover:scale-105"
+                    hover:scale-105 sm:max-h-[150px] sm:w-[150px]"
           loading="lazy"
           placeholder="blur"
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPJ7lBKQAAAABJRU5ErkJggg=="
@@ -81,15 +118,15 @@ const Product = ({ item, lng }: NewsTypes) => {
       </div>
 
       <div className="px-6 pb-6 flex flex-col flex-grow space-y-4">
-        <h3 className="text-lg font-semibold text-white line-clamp-2 leading-tight">
+        <h3 className="text-lg font-semibold text-white line-clamp-2 leading-tight sm:text-base md:text-lg">
           {lng === "uz" ? item.name_uz : item.name_ru}
         </h3>
 
         <div className="space-y-3">
-          <p className="text-[#D3176D] text-xl font-bold tracking-tight">
-            {formatPrice(item.price_uzs)}
+          <p className="text-[#D3176D] text-xl font-bold tracking-tight sm:text-lg">
+            {valute === 'UZS' ? formatPrice(item.price_uzs) : formatPrice(item.price_usd)}
           </p>
-          <p className="text-gray-400 text-sm line-clamp-2 leading-relaxed">
+          <p className="text-gray-400 text-sm line-clamp-2 leading-relaxed sm:text-xs">
             {lng === "uz" ? item.description_uz : item.description_ru}
           </p>
         </div>
@@ -97,7 +134,7 @@ const Product = ({ item, lng }: NewsTypes) => {
         <div className="mt-auto flex items-center justify-between pt-4">
           <Link
             href={
-              item.videocard 
+              item.videocard
                 ? `/${lng}/desktops/${item.id}`
                 : `/${lng}/products/${item.slug}`
             }
@@ -107,7 +144,7 @@ const Product = ({ item, lng }: NewsTypes) => {
               className="px-4 py-2 bg-gray-800/50 text-white text-sm font-medium
                         rounded-lg border border-gray-700
                         hover:bg-gray-700 hover:border-gray-600
-                        transition-all duration-200"
+                        transition-all duration-200 sm:px-3 sm:py-1"
             >
               {t("more")}
             </motion.button>
@@ -121,7 +158,7 @@ const Product = ({ item, lng }: NewsTypes) => {
                       rounded-full transition-all duration-200"
             asChild
           >
-            <motion.div whileTap={{ scale: 0.9 }}>
+            <motion.div whileTap={{ scale: 0.9 }} onClick={() => handleAddToCard(item)}>
               <ShoppingCart
                 className="h-5 w-5 group-hover:rotate-12
                                      transition-transform duration-200"

@@ -20,7 +20,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Menu, ShoppingCart } from "lucide-react";
 import Link from "next/link";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -35,6 +35,7 @@ import { ProductsAccordion } from "./mobile-accordions";
 import { useTranslation } from "@/i18n/client";
 
 const Navbar = ({ lng }: { lng: string }) => {
+  const [valute, setValute] = useState('')
   const { t } = useTranslation(lng);
   const [search, setSearch] = useState("");
   const router = useRouter();
@@ -46,6 +47,17 @@ const Navbar = ({ lng }: { lng: string }) => {
     params.set("lang", value);
     router.push(`/${value}`);
   };
+
+  useEffect(() => {
+    const valute = localStorage.getItem('valute')
+    setValute(valute as string)
+  }, [])
+
+  const handleValueChange = (value: string) => {
+    localStorage.setItem('valute', value);
+    setValute(value);
+  };
+  
 
   const onSearchProducts = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -149,7 +161,7 @@ const Navbar = ({ lng }: { lng: string }) => {
             </SelectContent>
           </Select>
 
-          <Select>
+          <Select value={valute} onValueChange={handleValueChange}>
             <SelectTrigger className="hidden sm:flex w-[100px] text-sm">
               <SelectValue placeholder="UZS" />
             </SelectTrigger>
@@ -173,7 +185,7 @@ const Navbar = ({ lng }: { lng: string }) => {
             />
           </form>
 
-          <Link href={`/card?lang=${lang}`} className="hidden sm:block">
+          <Link href={`/card`} className="hidden sm:block">
             <ShoppingCart
               size={22}
               className="cursor-pointer hover:text-[#D3176D] transition-colors"

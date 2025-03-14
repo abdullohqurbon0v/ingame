@@ -28,7 +28,7 @@ const SingleProductPage = ({ id, lng }: SingleProductPageProps) => {
         const desktopsRes = await $axios.get("/desktops");
         setDesktops(desktopsRes.data);
       } catch (err) {
-        console.error(t("error_loading_data"), err); // Используем перевод для ошибки
+        console.error(t("error_loading_data"), err); 
       }
     };
 
