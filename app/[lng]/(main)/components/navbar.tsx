@@ -369,14 +369,24 @@ const Navbar = ({ lng }: { lng: string }) => {
                 </Select>
               </div>
 
-              <form className="mt-6" onSubmit={onSearchProducts}>
+              <form
+                className="flex items-center gap-2 rounded-2xl shadow-md mt-4"
+                onSubmit={onSearchProducts}
+              >
                 <Input
                   type="search"
                   name="search"
-                  placeholder="Поиск..."
-                  className="w-full text-sm bg-[#2a2a2a] text-white border-none focus:ring-1 focus:ring-[#D3176D]"
+                  placeholder="Поиск товаров..."
+                  className="flex-1 text-sm bg-[#2a2a2a] text-white border-none focus:ring-0 placeholder:text-gray-400"
                   onChange={(e) => setSearch(e.target.value)}
+                  value={search}
                 />
+                <Button
+                  type="submit"
+                  className="bg-[#D3176D] hover:bg-[#b0155c] text-white text-sm px-4 py-2 rounded-lg"
+                >
+                  {t("search")}
+                </Button>
               </form>
 
               <div className="mt-6">

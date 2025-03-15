@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { useTranslation } from "@/i18n/client";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { $axios } from "@/http/api";
 import { toast } from "sonner";
 
@@ -28,6 +28,7 @@ const OrderPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [valute, setValute] = useState("");
+  const router = useRouter();
 
   const { t } = useTranslation(lng as string);
 
@@ -143,6 +144,7 @@ const OrderPage: React.FC = () => {
           onClick: () => console.log("Undo"),
         },
       });
+      router.push("/");
     } catch (err) {
       if (axios.isAxiosError(err)) {
         setError(
@@ -177,7 +179,7 @@ const OrderPage: React.FC = () => {
 
   return (
     <div className="max-w-[1200px] min-h-screen mt-16 mx-auto px-4 py-12 text-white">
-      <h1 className="text-3xl font-bold mb-8">Оформить заказ</h1>
+      <h1 className="text-3xl font-bold mb-8">{t("oformit")}</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <form onSubmit={handleSubmit} className="lg:col-span-2 space-y-6">
@@ -232,7 +234,13 @@ const OrderPage: React.FC = () => {
               loading ? "opacity-50 cursor-not-allowed" : "hover:bg-pink-600"
             }`}
           >
-            {loading ? "Отправка..." : "Оформить заказ"}
+            {loading
+              ? lng === "uz"
+                ? "Jonatilmoqda"
+                : lng === "ru"
+                ? "отправка"
+                : t("loading")
+              : t("oformit")}
           </button>
         </form>
 

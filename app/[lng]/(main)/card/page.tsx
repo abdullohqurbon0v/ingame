@@ -1,8 +1,10 @@
 "use client";
 
+import { useTranslation } from "@/i18n/client";
 import { Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 type CartItemType = {
@@ -65,7 +67,6 @@ const CartItem: React.FC<CartItemProps> = ({
         />
         <div>
           <h2 className="text-white font-semibold text-lg">{item.title}</h2>
-          <p className="text-gray-400 text-sm">{item.details}</p>
           <p className="text-pink-500 text-sm font-medium">
             {item.availability}
           </p>
@@ -105,13 +106,13 @@ const CartItem: React.FC<CartItemProps> = ({
 const CartPage: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
   const [valute, setValute] = useState<string>("UZS");
+  const { lng } = useParams();
+  const { t } = useTranslation(lng as string);
 
   useEffect(() => {
-    // Устанавливаем начальное значение валюты из localStorage
     const storedValute = localStorage.getItem("valute") || "UZS";
     setValute(storedValute);
 
-    // Загружаем корзину из localStorage
     const storedCart = localStorage.getItem("cartItems");
     if (storedCart) {
       try {
@@ -122,7 +123,6 @@ const CartPage: React.FC = () => {
       }
     }
 
-    // Функция для обработки изменений валюты
     const handleStorageChange = () => {
       const newValute = localStorage.getItem("valute") || "UZS";
       setValute(newValute);
@@ -195,24 +195,24 @@ const CartPage: React.FC = () => {
             <div className="flex flex-col sm:flex-row justify-between items-center mt-8 p-4 bg-[#222] rounded-xl gap-4">
               <input
                 type="text"
-                placeholder="Введите промокод"
+                placeholder={t("promokod")}
                 className="p-3 bg-gray-800 rounded-lg text-white w-full sm:w-1/2"
               />
               <button className="bg-pink-500 hover:bg-pink-600 px-5 py-3 rounded-lg text-white font-semibold transition">
-                Применить
+                {t("primenit")}
               </button>
             </div>
 
             <div className="mt-8 p-6 bg-[#2a2a2a] rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4">
               <p className="text-2xl font-semibold">
-                Итого:{" "}
+                {t("itogo")}:{" "}
                 <span className="text-pink-500 font-bold">
                   {formatPrice(total, valute)}
                 </span>
               </p>
               <Link href={"/registration"}>
                 <button className="bg-pink-500 hover:bg-pink-600 px-8 py-3 rounded-full text-lg font-bold text-white transition shadow-lg">
-                  Оформить заказ
+                  {t("oformit")}
                 </button>
               </Link>
             </div>

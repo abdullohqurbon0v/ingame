@@ -31,7 +31,6 @@ const Product = ({ item, lng }: NewsTypes) => {
   console.log(item);
   const [valute, setValute] = useState<string>("UZS");
   const { t } = useTranslation(lng);
-  const [isHovered, setIsHovered] = useState(false);
 
   const formatPrice = (price: string, currency: string) =>
     new Intl.NumberFormat(currency === "UZS" ? "uz-UZ" : "en-US", {
@@ -100,8 +99,6 @@ const Product = ({ item, lng }: NewsTypes) => {
       variants={cardVariants}
       initial="initial"
       whileHover="hover"
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
       className="bg-gradient-to-b from-[#1E1E1E] to-[#2A2A2A] rounded-2xl overflow-hidden
                  border border-gray-800/30 flex flex-col
                  max-w-sm mx-auto shadow-lg hover:shadow-xl transition-shadow duration-300"
@@ -118,16 +115,6 @@ const Product = ({ item, lng }: NewsTypes) => {
           placeholder="blur"
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPJ7lBKQAAAABJRU5ErkJggg=="
         />
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isHovered ? 1 : 0 }}
-          transition={{ duration: 0.2 }}
-          className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-xl"
-        >
-          <span className="text-white text-sm font-semibold bg-[#D3176D]/80 px-3 py-1 rounded-full">
-            {t("quick_view")}
-          </span>
-        </motion.div>
       </div>
       <div className="px-5 pb-5 flex flex-col flex-grow space-y-4">
         <h3 className="text-lg font-bold text-white line-clamp-2 leading-tight">
