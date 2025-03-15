@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 interface CategoryItem {
@@ -9,10 +9,17 @@ interface CategoryItem {
   name_ru: string;
 }
 const Categories = ({ item, lng }: { item: CategoryItem; lng: string }) => {
+  const searchParams = useSearchParams;
+  const router = useRouter();
+  const onRouteEl = (id: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("lang", lng);
+    router.push(`/${lng}/category/${id}`);
+  };
   return (
-    <Link
-      href={`/category/${item.id}`}
-      className="mt-16 flex flex-col justify-between"
+    <div
+      onClick={() => onRouteEl(item.id)}
+      className="mt-16 flex flex-col justify-between cursor-pointer"
     >
       <Image
         src={item.image}
@@ -24,7 +31,7 @@ const Categories = ({ item, lng }: { item: CategoryItem; lng: string }) => {
       <p className="text-center">
         {lng === "uz" ? item.name_uz : item.name_ru}
       </p>
-    </Link>
+    </div>
   );
 };
 

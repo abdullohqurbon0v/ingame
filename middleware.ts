@@ -9,6 +9,7 @@ const intlMiddleware = createMiddleware({
 export function middleware(request: NextRequest) {
   return intlMiddleware(request);
 }
+
 export const config = {
   matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };

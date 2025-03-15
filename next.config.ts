@@ -25,11 +25,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  i18n: {
-    locales: ["uz", "ru"],
-    defaultLocale: "uz",
-    localeDetection: false,
-  },
 };
 
 export default nextConfig;
