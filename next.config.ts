@@ -4,27 +4,32 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
+        protocol: "https",
         hostname: "e7.pngegg.com",
       },
       {
-        protocol: 'https',
+        protocol: "https",
         hostname: "encrypted-tbn0.gstatic.com",
       },
       {
-        protocol: 'https',
+        protocol: "https",
         hostname: "i0.wp.com",
       },
       {
-        protocol: 'https',
+        protocol: "https",
         hostname: "api.mirmakhmudoff.uz",
       },
       {
-        protocol: 'https',
+        protocol: "https",
         hostname: "a.storyblok.com",
-      }
-    ]
-  }
+      },
+    ],
+  },
+  i18n: {
+    locales: ["uz", "ru"],
+    defaultLocale: "uz",
+    localeDetection: false,
+  },
 };
 
 export default nextConfig;
