@@ -254,10 +254,8 @@ const Navbar = ({ lng }: { lng: string }) => {
 
             <SheetContent className="bg-[#1a1a1a] overflow-y-scroll text-white">
               <SheetHeader>
-                <SheetTitle className="text-lg font-bold">Меню</SheetTitle>
-                <SheetDescription className="text-sm text-neutral-400">
-                  Навигация по сайту
-                </SheetDescription>
+                <SheetTitle className="text-lg font-bold"></SheetTitle>
+                <SheetDescription className="text-sm text-neutral-400"></SheetDescription>
               </SheetHeader>
 
               <div className="mt-6 flex flex-col gap-4 text-base font-medium">
@@ -265,14 +263,14 @@ const Navbar = ({ lng }: { lng: string }) => {
                   href={`/`}
                   className="hover:text-[#D3176D] transition-colors"
                 >
-                  Главная
+                  {t("main")}
                 </Link>
                 <ProductsAccordion lang={lang} />
                 <Link
                   href={`/brands`}
                   className="hover:text-[#D3176D] transition-colors"
                 >
-                  О бренде
+                  {t("aboutbrand")}
                 </Link>
               </div>
 
@@ -283,18 +281,20 @@ const Navbar = ({ lng }: { lng: string }) => {
                       variant="outline"
                       className="w-full border-[#D3176D] text-white hover:text-[#D3176D]"
                     >
-                      Связаться
+                      {t("connect")}
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px] text-center space-y-4">
                     <DialogTitle>
                       <p className="text-xl font-bold">
-                        <span className="text-[#D3176D]">Оставьте заявку</span>{" "}
-                        <br /> и наш менеджер свяжется с вами
+                        <span className="text-[#D3176D]">
+                          {t("dialogtitle")}
+                        </span>{" "}
+                        <br /> {t("dialogtitle2")}
                       </p>
                     </DialogTitle>
                     <DialogDescription className="text-sm text-muted-foreground">
-                      Мы ответим в течение рабочего дня.
+                      {t("answdialog")}
                     </DialogDescription>
                     <form className="space-y-4 text-left" onSubmit={onSendData}>
                       <div className="space-y-1">
@@ -302,11 +302,10 @@ const Navbar = ({ lng }: { lng: string }) => {
                           htmlFor="fullName"
                           className="text-sm font-medium text-white"
                         >
-                          Полное имя
+                          {t("fullname")}
                         </label>
                         <Input
                           id="fullName"
-                          placeholder="Иван Иванов"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           className="bg-[#2a2a2a] text-white border-none focus:ring-1 focus:ring-[#D3176D]"
@@ -318,7 +317,7 @@ const Navbar = ({ lng }: { lng: string }) => {
                           htmlFor="phone"
                           className="text-sm font-medium text-white"
                         >
-                          Номер телефона
+                          {t("phonenumber")}
                         </label>
                         <Input
                           id="phone"
@@ -334,7 +333,7 @@ const Navbar = ({ lng }: { lng: string }) => {
                         type="submit"
                         className="w-full bg-[#D3176D] text-white hover:bg-[#b2145a]"
                       >
-                        Отправить
+                        {t("send")}
                       </Button>
                     </form>
                   </DialogContent>
@@ -342,7 +341,7 @@ const Navbar = ({ lng }: { lng: string }) => {
               </div>
 
               <div className="mt-6 flex flex-col gap-3">
-                <div className="text-sm text-muted-foreground">Язык</div>
+                <div className="text-sm text-muted-foreground">{t("lang")}</div>
                 <Select value={lang} onValueChange={handleLanguageChange}>
                   <SelectTrigger className="w-full bg-[#2a2a2a] border-none text-white">
                     <SelectValue placeholder={lang.toUpperCase()} />
@@ -355,7 +354,9 @@ const Navbar = ({ lng }: { lng: string }) => {
                   </SelectContent>
                 </Select>
 
-                <div className="text-sm text-muted-foreground mt-4">Валюта</div>
+                <div className="text-sm text-muted-foreground mt-4">
+                  {t("valute")}
+                </div>
                 <Select value={valute} onValueChange={handleValueChange}>
                   <SelectTrigger className="w-full bg-[#2a2a2a] border-none text-white">
                     <SelectValue placeholder="UZS" />
@@ -376,7 +377,7 @@ const Navbar = ({ lng }: { lng: string }) => {
                 <Input
                   type="search"
                   name="search"
-                  placeholder="Поиск товаров..."
+                  placeholder={t("searchtovars")}
                   className="flex-1 text-sm bg-[#2a2a2a] text-white border-none focus:ring-0 placeholder:text-gray-400"
                   onChange={(e) => setSearch(e.target.value)}
                   value={search}
@@ -394,7 +395,7 @@ const Navbar = ({ lng }: { lng: string }) => {
                   href={`/card`}
                   className="flex items-center justify-center w-full px-4 py-2 rounded-md border border-white hover:border-[#D3176D] hover:text-[#D3176D] transition"
                 >
-                  Перейти в корзину
+                  {t("korzina")}
                 </Link>
               </div>
             </SheetContent>
