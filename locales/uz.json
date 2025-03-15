@@ -80,7 +80,7 @@
   "error_loading_data": "Ошибка при загрузке данных:",
   "in_stock": "В наличии",
   "added_to_cart": "Товар добавлен в корзину!",
-  "sum": "Сум",
+  "sum": "Sum",
   "add_to_cart": "В Корзину",
   "specifications": "Характеристики",
   "graphics_card": "Видеокарта:",
@@ -100,5 +100,14 @@
   "delivery": "Yetkazib berish",
   "need_help": "Yordam kerakmi?",
   "similar_product": "O'xshash mahsulot",
-  "product_title": "Nomi"
+  "product_title": "Nomi",
+  "dostavka1": "• 1 kunlik bepul yetkazib berish.",
+  "dostavka2": "• Toshkent shahri ichidagi manzilga yetkazib berish.",
+  "dostavka3": "• Mebel - TKAD bo'yicha 100 000 so'm.",
+  "dostavka4": "• Mintaqalarga - tezkor pochta orqali BTS yoki Fargo.",
+  "address": "Buyurtmani manzili",
+  "desc": "Buyurtma bo'yicha sharhlar",
+  "tovars": "Tovarlar",
+  "total": "Jami",
+  "loading": "Jonatilmoqda..."
 }

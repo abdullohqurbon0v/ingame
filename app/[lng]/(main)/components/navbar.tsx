@@ -33,11 +33,16 @@ import Products from "./navbar/products";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ProductsAccordion } from "./mobile-accordions";
 import { useTranslation } from "@/i18n/client";
+import { $axios } from "@/http/api";
+import { toast } from "sonner";
 
 const Navbar = ({ lng }: { lng: string }) => {
   const [valute, setValute] = useState<string>("");
   const { t } = useTranslation(lng);
   const [search, setSearch] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const lang = lng;
@@ -48,23 +53,49 @@ const Navbar = ({ lng }: { lng: string }) => {
     router.push(`/${value}`);
   };
 
+  const onSendData = async (e: FormEvent<HTMLFormElement>) => {
+    setLoading(true);
+    e.preventDefault();
+    if (!name || !valute) return;
+
+    try {
+      const res = await $axios.post("/contact/", {
+        name,
+        phone_number: phone,
+      });
+      setPhone("");
+      setName("");
+      console.log(res);
+      toast(
+        lng === "uz"
+          ? "Malumotlar mofaqiyatli jonatildi"
+          : "Данные отправлены успешно",
+        {
+          action: {
+            label: lng === "uz" ? "Yopish" : "Закрыть",
+            onClick: () => console.log("Undo"),
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // Устанавливаем начальное значение из localStorage
     const storedValute = localStorage.getItem("valute") || "UZS";
     setValute(storedValute);
 
-    // Функция для обработки изменений localStorage
     const handleStorageChange = () => {
       const newValute = localStorage.getItem("valute") || "UZS";
       setValute(newValute);
     };
 
-    // Слушаем событие 'storage' для изменений из других вкладок
     window.addEventListener("storage", handleStorageChange);
-    // Слушаем кастомное событие для текущей вкладки
     window.addEventListener("valuteChange", handleStorageChange);
 
-    // Очистка слушателей
     return () => {
       window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("valuteChange", handleStorageChange);
@@ -74,7 +105,6 @@ const Navbar = ({ lng }: { lng: string }) => {
   const handleValueChange = (value: string) => {
     localStorage.setItem("valute", value);
     setValute(value);
-    // Уведомляем другие компоненты об изменении валюты
     window.dispatchEvent(new Event("valuteChange"));
   };
 
@@ -126,7 +156,7 @@ const Navbar = ({ lng }: { lng: string }) => {
               <DialogDescription className="text-sm text-muted-foreground">
                 {t("answdialog")}
               </DialogDescription>
-              <form className="space-y-4 text-left">
+              <form className="space-y-4 text-left" onSubmit={onSendData}>
                 <div className="space-y-1">
                   <label
                     htmlFor="fullName"
@@ -137,6 +167,8 @@ const Navbar = ({ lng }: { lng: string }) => {
                   <Input
                     id="fullName"
                     placeholder="Иван Иванов"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     className="bg-[#2a2a2a] text-white border-none focus:ring-1 focus:ring-[#D3176D]"
                     required
                   />
@@ -152,6 +184,8 @@ const Navbar = ({ lng }: { lng: string }) => {
                   <Input
                     id="phone"
                     type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     placeholder="+998 90 123 45 67"
                     className="bg-[#2a2a2a] text-white border-none focus:ring-1 focus:ring-[#D3176D]"
                     required
@@ -162,7 +196,7 @@ const Navbar = ({ lng }: { lng: string }) => {
                   type="submit"
                   className="w-full bg-[#D3176D] text-white hover:bg-[#b2145a] transition-colors"
                 >
-                  {t("send")}
+                  {loading ? t("loading") : t("send")}
                 </Button>
               </form>
             </DialogContent>
@@ -228,14 +262,14 @@ const Navbar = ({ lng }: { lng: string }) => {
 
               <div className="mt-6 flex flex-col gap-4 text-base font-medium">
                 <Link
-                  href={`/?lang=${lang}`}
+                  href={`/`}
                   className="hover:text-[#D3176D] transition-colors"
                 >
                   Главная
                 </Link>
                 <ProductsAccordion lang={lang} />
                 <Link
-                  href={`/brands?lang=${lang}`}
+                  href={`/brands`}
                   className="hover:text-[#D3176D] transition-colors"
                 >
                   О бренде

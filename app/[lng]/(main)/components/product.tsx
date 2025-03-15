@@ -40,6 +40,7 @@ const Product = ({ item, lng }: NewsTypes) => {
     }).format(Number(price));
 
   const handleAddToCard = (item: ProductsType) => {
+    console.log(item);
     if (!item) return;
     toast(lng === "uz" ? "Savatga qoshildi" : "Добавлено в корзину", {
       description: lng === "uz" ? item.name_uz : item.name_ru,
