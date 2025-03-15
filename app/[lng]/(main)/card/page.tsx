@@ -3,8 +3,7 @@
 import { useTranslation } from "@/i18n/client";
 import { Trash } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 type CartItemType = {
@@ -108,6 +107,11 @@ const CartPage: React.FC = () => {
   const [valute, setValute] = useState<string>("UZS");
   const { lng } = useParams();
   const { t } = useTranslation(lng as string);
+  const router = useRouter();
+
+  const handleToRegister = () => {
+    router.push(`/${lng}`);
+  };
 
   useEffect(() => {
     const storedValute = localStorage.getItem("valute") || "UZS";
@@ -210,11 +214,11 @@ const CartPage: React.FC = () => {
                   {formatPrice(total, valute)}
                 </span>
               </p>
-              <Link href={"/registration"}>
+              <div onClick={handleToRegister}>
                 <button className="bg-pink-500 hover:bg-pink-600 px-8 py-3 rounded-full text-lg font-bold text-white transition shadow-lg">
                   {t("oformit")}
                 </button>
-              </Link>
+              </div>
             </div>
           </>
         )}
