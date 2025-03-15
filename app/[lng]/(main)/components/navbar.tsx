@@ -117,6 +117,10 @@ const Navbar = ({ lng }: { lng: string }) => {
     router.push(`/${lng}/brands`);
   };
 
+  const navigateCard = () => {
+    router.push(`/${lng}/card`);
+  };
+
   return (
     <div
       className={cn("fixed inset-x-0 top-0 h-16 bg-[#1a1a1a] shadow-md z-50")}
@@ -242,12 +246,12 @@ const Navbar = ({ lng }: { lng: string }) => {
             />
           </form>
 
-          <Link href={`/card`} className="hidden sm:block">
+          <div onClick={navigateCard} className="hidden sm:block">
             <ShoppingCart
               size={22}
               className="cursor-pointer hover:text-[#D3176D] transition-colors"
             />
-          </Link>
+          </div>
 
           <Sheet>
             <SheetTrigger asChild>
@@ -395,12 +399,12 @@ const Navbar = ({ lng }: { lng: string }) => {
               </form>
 
               <div className="mt-6">
-                <Link
-                  href={`/card`}
+                <div
+                  onClick={navigateCard}
                   className="flex items-center justify-center w-full px-4 py-2 rounded-md border border-white hover:border-[#D3176D] hover:text-[#D3176D] transition"
                 >
                   {t("korzina")}
-                </Link>
+                </div>
               </div>
             </SheetContent>
           </Sheet>
