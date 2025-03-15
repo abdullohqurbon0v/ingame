@@ -1,11 +1,16 @@
 import { useTranslation } from "@/i18n/client";
 import { BlogTypes } from "@/types";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const Blogs = ({ blogs, lng }: { blogs: BlogTypes[]; lng: string }) => {
   const { t } = useTranslation(lng);
+  const router = useRouter();
+
+  const handleNavigate = (id: number) => {
+    router.push(`/${lng}/blogs/${id}`);
+  };
   return (
     <div className="max-w-[1200px] mx-auto mt-20 px-4">
       <h2 className="text-white text-3xl md:text-5xl font-bold mb-12">
@@ -43,12 +48,12 @@ const Blogs = ({ blogs, lng }: { blogs: BlogTypes[]; lng: string }) => {
                   ? `${post.description_ru.slice(0, 50)}...`
                   : post.description_ru}
               </p>
-              <Link
-                href={`/blog/${post.id}`}
+              <div
+                onClick={() => handleNavigate(post.id)}
                 className="text-pink-500 text-sm font-semibold mt-4 inline-block hover:underline"
               >
                 {t("read")}
-              </Link>
+              </div>
             </div>
           </div>
         ))}

@@ -113,6 +113,10 @@ const Navbar = ({ lng }: { lng: string }) => {
     router.push(`/search?query=${search}`);
   };
 
+  const navigateToBrand = () => {
+    router.push(`/${lng}/brands`);
+  };
+
   return (
     <div
       className={cn("fixed inset-x-0 top-0 h-16 bg-[#1a1a1a] shadow-md z-50")}
@@ -126,12 +130,12 @@ const Navbar = ({ lng }: { lng: string }) => {
             <span className="text-[#D3176D]">OutGame</span>.uz
           </Link>
           <Products lang={lang} />
-          <Link
-            href={`/brands`}
+          <div
+            onClick={() => navigateToBrand()}
             className="text-sm hidden sm:block hover:text-[#D3176D] transition-colors"
           >
             {t("navaboutbrand")}
-          </Link>
+          </div>
         </div>
 
         <div className="flex items-center space-x-6">
@@ -266,12 +270,12 @@ const Navbar = ({ lng }: { lng: string }) => {
                   {t("main")}
                 </Link>
                 <ProductsAccordion lang={lang} />
-                <Link
-                  href={`/brands`}
+                <div
+                  onClick={navigateToBrand}
                   className="hover:text-[#D3176D] transition-colors"
                 >
                   {t("aboutbrand")}
-                </Link>
+                </div>
               </div>
 
               <div className="mt-8">
