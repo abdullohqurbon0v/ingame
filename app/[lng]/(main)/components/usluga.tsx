@@ -1,6 +1,6 @@
 import { useTranslation } from "@/i18n/client";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface UslugaProps {
@@ -19,6 +19,11 @@ interface UslugaProps {
 
 const Usluga = ({ item, lng }: UslugaProps) => {
   const { t } = useTranslation(lng);
+  const router = useRouter();
+
+  const onNavigateProduct = (id: number) => {
+    router.push(`/${lng}/services/${id}`);
+  };
   return (
     <div className="bg-[#1E1E1E] font-sans  flex flex-col space-y-3 shadow-xl rounded-xl pb-5">
       <Image
@@ -34,9 +39,9 @@ const Usluga = ({ item, lng }: UslugaProps) => {
         </p>
         <p>{lng == "uz" ? item.min_description_uz : item.min_description_ru}</p>
         <div className="flex items-center space-x-2 justify-start">
-          <Link href={`/services/${item.id}`}>
+          <div onClick={() => onNavigateProduct(item.id)}>
             <button className="px-5 py-1 border text-sm">{t("more")}</button>
-          </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/i18n/client";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ProductsType } from "@/types";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface NewsTypes {
   item: {
@@ -28,7 +28,7 @@ interface NewsTypes {
 }
 
 const Product = ({ item, lng }: NewsTypes) => {
-  console.log(item);
+  const router = useRouter();
   const [valute, setValute] = useState<string>("UZS");
   const { t } = useTranslation(lng);
 
@@ -94,6 +94,14 @@ const Product = ({ item, lng }: NewsTypes) => {
     };
   }, []);
 
+  const onNavigateDesktop = (item: ProductsType) => {
+    router.push(
+      item.videocard
+        ? `/${lng}/desktops/${item.id}`
+        : `/${lng}/products/${item.slug}`
+    );
+  };
+
   return (
     <motion.div
       variants={cardVariants}
@@ -132,14 +140,7 @@ const Product = ({ item, lng }: NewsTypes) => {
           </p>
         </div>
         <div className="mt-auto flex items-center justify-between gap-3">
-          <Link
-            href={
-              item.videocard
-                ? `/${lng}/desktops/${item.id}`
-                : `/${lng}/products/${item.slug}`
-            }
-            className="flex-1"
-          >
+          <div onClick={() => onNavigateDesktop(item)} className="flex-1">
             <motion.button
               whileTap={{ scale: 0.95 }}
               className="w-full px-4 py-2 bg-gray-800/70 text-white text-sm font-medium
@@ -149,7 +150,7 @@ const Product = ({ item, lng }: NewsTypes) => {
             >
               {t("more")}
             </motion.button>
-          </Link>
+          </div>
 
           <Button
             variant="ghost"

@@ -2,7 +2,7 @@ import { useTranslation } from "@/i18n/client";
 import { DesktopType } from "@/types";
 import { Cctv, Cpu, MemoryStick, Thermometer } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -41,6 +41,7 @@ interface ComputersTypes {
 const Computers = ({ item, lng }: ComputersTypes) => {
   const { t } = useTranslation(lng);
   const [valute, setValute] = useState("");
+  const router = useRouter();
 
   const handleAddToCard = (item: DesktopType) => {
     toast(lng == "uz" ? "Savatga qoshildi" : "Добавлено в карзину", {
@@ -68,6 +69,10 @@ const Computers = ({ item, lng }: ComputersTypes) => {
 
     const updatedCart = [...existingCart, newItem];
     localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+  };
+
+  const onNavigateProduct = (id: number) => {
+    router.push(`/${lng}/desktops/${id}`);
   };
 
   useEffect(() => {
@@ -140,11 +145,11 @@ const Computers = ({ item, lng }: ComputersTypes) => {
         </div>
       </div>
       <div className="flex space-x-4 pt-2">
-        <Link href={`/desktops/${item.id}`}>
+        <div onClick={() => onNavigateProduct(item.id)}>
           <button className="flex-1 px-4 py-2 border border-gray-600 text-white text-sm rounded-md hover:bg-gray-700 hover:border-gray-500 transition-colors">
             {t("more")}
           </button>
-        </Link>
+        </div>
         <button
           className="flex-1 px-4 py-2 border border-[#D3176D] text-[#D3176D] text-sm rounded-md hover:bg-[#D3176D] hover:text-white transition-all duration-200"
           onClick={() => handleAddToCard(item)}
