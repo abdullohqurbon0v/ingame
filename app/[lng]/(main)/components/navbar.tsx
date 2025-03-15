@@ -296,7 +296,7 @@ const Navbar = ({ lng }: { lng: string }) => {
                     <DialogDescription className="text-sm text-muted-foreground">
                       Мы ответим в течение рабочего дня.
                     </DialogDescription>
-                    <form className="space-y-4 text-left">
+                    <form className="space-y-4 text-left" onSubmit={onSendData}>
                       <div className="space-y-1">
                         <label
                           htmlFor="fullName"
@@ -307,6 +307,8 @@ const Navbar = ({ lng }: { lng: string }) => {
                         <Input
                           id="fullName"
                           placeholder="Иван Иванов"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
                           className="bg-[#2a2a2a] text-white border-none focus:ring-1 focus:ring-[#D3176D]"
                           required
                         />
@@ -321,6 +323,8 @@ const Navbar = ({ lng }: { lng: string }) => {
                         <Input
                           id="phone"
                           type="tel"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
                           placeholder="+998 90 123 45 67"
                           className="bg-[#2a2a2a] text-white border-none focus:ring-1 focus:ring-[#D3176D]"
                           required
