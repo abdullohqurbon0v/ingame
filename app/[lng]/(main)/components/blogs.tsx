@@ -9,7 +9,7 @@ const Blogs = ({ blogs, lng }: { blogs: BlogTypes[]; lng: string }) => {
   const router = useRouter();
 
   const handleNavigate = (id: number) => {
-    router.push(`/${lng}/blogs/${id}`);
+    router.push(`/${lng}/blog/${id}`);
   };
   return (
     <div className="max-w-[1200px] mx-auto mt-20 px-4">
@@ -50,7 +50,7 @@ const Blogs = ({ blogs, lng }: { blogs: BlogTypes[]; lng: string }) => {
               </p>
               <div
                 onClick={() => handleNavigate(post.id)}
-                className="text-pink-500 text-sm font-semibold mt-4 inline-block hover:underline"
+                className="text-pink-500 text-sm font-semibold mt-4 inline-block hover:underline cursor-pointer"
               >
                 {t("read")}
               </div>
