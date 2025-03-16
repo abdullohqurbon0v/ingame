@@ -66,9 +66,6 @@ const CartItem: React.FC<CartItemProps> = ({
         />
         <div>
           <h2 className="text-white font-semibold text-lg">{item.title}</h2>
-          <p className="text-pink-500 text-sm font-medium">
-            {item.availability}
-          </p>
         </div>
       </div>
 
@@ -178,12 +175,10 @@ const CartPage: React.FC = () => {
 
   return (
     <div className="max-w-[1200px] mx-auto px-4 mt-16 pt-10">
-      <h1 className="text-3xl font-bold text-white mb-8">Корзина</h1>
+      <h1 className="text-3xl font-bold text-white mb-8">{t("korzina")}</h1>
       <div className="bg-black min-h-screen p-6 sm:p-10 rounded-2xl shadow-inner">
         {cartItems.length === 0 ? (
-          <p className="text-gray-400 text-center text-xl">
-            Ваша корзина пуста
-          </p>
+          <p className="text-gray-400 text-center text-xl">{t("notkorzina")}</p>
         ) : (
           <>
             {cartItems.map((item, index) => (

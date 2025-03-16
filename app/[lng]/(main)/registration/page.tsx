@@ -252,14 +252,19 @@ const OrderPage: React.FC = () => {
             <p>
               {t("total")}:{" "}
               <strong className="text-pink-500 text-lg">
-                {formatPrice(totalPrice)} сум
+                {formatPrice(totalPrice)}{" "}
+                {valute === "UZS" && lng === "uz"
+                  ? "Sum"
+                  : lng === "ru"
+                  ? "Сум"
+                  : "$"}
               </strong>
             </p>
           </div>
 
           <div className="space-y-4">
             {cartItems.length === 0 ? (
-              <p className="text-gray-400 text-center">Корзина пуста</p>
+              <p className="text-gray-400 text-center">{t("notkorzina")}</p>
             ) : (
               cartItems.map((item, index) => (
                 <div
@@ -275,9 +280,6 @@ const OrderPage: React.FC = () => {
                   />
                   <div className="flex-1">
                     <p className="text-sm font-semibold">{item.title}</p>
-                    <p className="text-xs text-gray-400">
-                      Кол-во: {item.quantity}
-                    </p>
                     <p className="text-sm font-medium">
                       {valute === "UZS" ? item.price_uzs : item.price_usd}{" "}
                       {valute === "UZS" ? t("sum") : "$"}

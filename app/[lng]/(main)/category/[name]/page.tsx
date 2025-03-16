@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { $axios } from "@/http/api";
 import Product from "../../components/product";
 import Loading from "../../components/loading";
+import { useTranslation } from "@/i18n/client";
 
 interface Brand {
   name: string;
@@ -57,6 +58,7 @@ const Category = () => {
 
   const { lng, name } = useParams<{ name: string; lng: string }>();
   const monitors = ["24", "27", "32"];
+  const { t } = useTranslation(lng);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -164,31 +166,31 @@ const Category = () => {
     <div className="bg-[#1A1A1A] min-h-screen py-20">
       <div className="max-w-[1200px] mx-auto px-4 md:px-0 flex flex-col md:flex-row gap-8 pt-20 text-white">
         <aside className="w-full md:w-1/4 bg-[#222222] p-6 rounded-xl shadow-lg">
-          <h2 className="text-xl font-semibold text-[#D3176D] mb-6">Фильтры</h2>
-
-          {/* Цена */}
+          <h2 className="text-xl font-semibold text-[#D3176D] mb-6">
+            {t("filter")}
+          </h2>
           <div className="space-y-4">
-            <p className="text-lg font-medium text-gray-200">Цена ({valute})</p>
+            <p className="text-lg font-medium text-gray-200">
+              {t("price")} ({valute})
+            </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Input
                 type="number"
-                placeholder="От"
+                placeholder={t("on")}
                 onChange={(e) => handleFilterChange("minPrice", e.target.value)}
                 className="bg-[#2A2A2A] border-none text-white placeholder-gray-500 focus:ring-2 focus:ring-[#D3176D] rounded-lg"
               />
               <Input
                 type="number"
-                placeholder="До"
+                placeholder={t("to")}
                 onChange={(e) => handleFilterChange("maxPrice", e.target.value)}
                 className="bg-[#2A2A2A] border-none text-white placeholder-gray-500 focus:ring-2 focus:ring-[#D3176D] rounded-lg"
               />
             </div>
             <div className="border-t border-gray-700 mt-4"></div>
           </div>
-
-          {/* Бренды */}
           <div className="mt-6 space-y-4">
-            <p className="text-lg font-medium text-gray-200">Бренды</p>
+            <p className="text-lg font-medium text-gray-200">{t("brand")}</p>
             {brands.map((item) => (
               <div key={item.id} className="flex items-center gap-3">
                 <Checkbox
@@ -205,10 +207,8 @@ const Category = () => {
             ))}
             <div className="border-t border-gray-700 mt-4"></div>
           </div>
-
-          {/* Монитор */}
           <div className="mt-6 space-y-4">
-            <p className="text-lg font-medium text-gray-200">Монитор</p>
+            <p className="text-lg font-medium text-gray-200">{t("monitor")}</p>
             {monitors.map((item) => (
               <div key={item} className="flex items-center gap-3">
                 <Checkbox
@@ -223,15 +223,12 @@ const Category = () => {
                 </p>
               </div>
             ))}
-            <div className="border-t border-gray-700 mt-4"></div>
           </div>
         </aside>
         <div className="flex-1">
-          <h1 className="text-3xl font-bold text-white mb-8">Игровые ПК</h1>
+          <h1 className="text-3xl font-bold text-white mb-8">{t("gamepk")}</h1>
           {filteredProducts.length === 0 ? (
-            <p className="text-gray-400 text-lg text-center">
-              Товаров не найдено
-            </p>
+            <p className="text-gray-400 text-lg text-center">{t("notfound")}</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((item) => (

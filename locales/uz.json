@@ -122,5 +122,13 @@
   "main": "Asoiy",
   "searchtovars": "Tovar izlash",
   "notfoundtitle": "Malumotlar topilmadi",
-  "tryanother": ""
+  "tryanother": "Boshqa qidiruv soʻzini sinab koʻring",
+  "filter": "Filtr",
+  "price": "Narh",
+  "on": "Dan",
+  "to": "Gacha",
+  "gamepk": "O'yin kompyuterlari",
+  "notfound": "Mahsulotlar topilmadi",
+  "karzina": "Savat",
+  "notkorzina": "Savatda tovar mavjud emas"
 }

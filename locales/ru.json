@@ -130,5 +130,13 @@
   "main": "Главная",
   "searchtovars": "Поиск товаров...",
   "notfoundtitle": "Результатов не найдено",
-  "tryanother": "Boshqa qidiruv soʻzini sinab koʻring"
+  "tryanother": "Попробуйте другую поисковое слово",
+  "filter": "Фильтр",
+  "price": "Цена",
+  "on": "От",
+  "to": "До",
+  "gamepk": "Игровые ПК",
+  "notfound": "Товаров не найдено",
+  "karzina": "Корзина",
+  "notkorzina": "Товаров нету в корзине"
 }
