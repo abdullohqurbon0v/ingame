@@ -110,7 +110,7 @@ const CartPage: React.FC = () => {
   const router = useRouter();
 
   const handleToRegister = () => {
-    router.push(`/${lng}`);
+    router.push(`/${lng}/registration`);
   };
 
   useEffect(() => {
