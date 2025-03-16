@@ -128,5 +128,7 @@
   "aboutbrand": "О бренде",
   "connect": "Связатся",
   "main": "Главная",
-  "searchtovars": "Поиск товаров..."
+  "searchtovars": "Поиск товаров...",
+  "notfoundtitle": "Результатов не найдено",
+  "tryanother": "Boshqa qidiruv soʻzini sinab koʻring"
 }

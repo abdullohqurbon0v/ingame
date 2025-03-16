@@ -120,5 +120,7 @@
   "aboutbrand": "Brandimiz",
   "connect": "Boglanish",
   "main": "Asoiy",
-  "searchtovars": "Tovar izlash"
+  "searchtovars": "Tovar izlash",
+  "notfoundtitle": "Malumotlar topilmadi",
+  "tryanother": ""
 }

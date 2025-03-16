@@ -8,12 +8,14 @@ import Product from "../components/product";
 import Accordions from "../components/accordions";
 import Blogs from "../components/blogs";
 import Loading from "../components/loading";
+import { useTranslation } from "@/i18n/client";
 
 const SearchPage = ({ lng }: { lng: string }) => {
   const [products, setProducts] = useState<ProductsType[]>([]);
   const [blogs, setBlogs] = useState<BlogTypes[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const param = useSearchParams();
+  const { t } = useTranslation(lng);
   const query = param.get("query");
 
   useEffect(() => {
@@ -45,9 +47,9 @@ const SearchPage = ({ lng }: { lng: string }) => {
     return (
       <div className="min-h-screen mt-16 flex flex-col items-center justify-center text-white">
         <p className="text-2xl font-semibold text-gray-100">
-          Результатов не найдено
+          {t("notfoundtitle")}
         </p>
-        <p className="mt-3 text-gray-300">Попробуйте другой поисковый запрос</p>
+        <p className="mt-3 text-gray-300">{t("tryanother")}</p>
       </div>
     );
   }
