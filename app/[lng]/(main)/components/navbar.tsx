@@ -243,7 +243,7 @@ const Navbar = ({ lng }: { lng: string }) => {
           >
             <Input
               type="search"
-              placeholder="Поиск..."
+              placeholder={t("search")}
               className="w-full text-sm bg-[#2a2a2a] border-none focus:ring-1 focus:ring-[#D3176D]"
               onChange={(e) => setSearch(e.target.value)}
             />
