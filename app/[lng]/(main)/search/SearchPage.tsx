@@ -56,7 +56,7 @@ const SearchPage = ({ lng }: { lng: string }) => {
     <div className="min-h-screen mt-16 text-white">
       <div className="max-w-[1200px] mx-auto pt-6 px-6 sm:px-0">
         <h1 className="my-16 text-3xl font-semibold">
-          {lng === "uz" ? "Majsulotlar" : "Прродукты"}
+          {lng === "uz" ? "Mahsulotlar" : "Прродукты"}
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {products.map((item) => (
