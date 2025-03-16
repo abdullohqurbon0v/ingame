@@ -48,11 +48,14 @@ const Navbar = ({ lng }: { lng: string }) => {
   const lang = lng;
 
   const handleLanguageChange = (value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("lang", value);
-    router.push(`/${value}`);
-  };
+    const currentPath = window.location.pathname;
+    const pathWithoutLang = currentPath.replace(/^\/[a-z]{2}/, "");
 
+    const newPath = `/${value}${pathWithoutLang}`;
+
+    const params = new URLSearchParams(searchParams.toString());
+    router.push(`${newPath}?${params.toString()}`);
+  };
   const onSendData = async (e: FormEvent<HTMLFormElement>) => {
     setLoading(true);
     e.preventDefault();
@@ -136,7 +139,7 @@ const Navbar = ({ lng }: { lng: string }) => {
           <Products lang={lang} />
           <div
             onClick={() => navigateToBrand()}
-            className="text-sm hidden sm:block hover:text-[#D3176D] transition-colors"
+            className="text-sm hidden sm:block hover:text-[#D3176D] transition-colors cursor-pointer"
           >
             {t("navaboutbrand")}
           </div>
